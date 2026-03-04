@@ -1,45 +1,44 @@
 # J-Line Web Marketing - Coding Guidelines
 
-## 本ガイドラインの目的
+## Mục đích của Guideline này
 
-このガイドラインは、ジェイ・ライン株式会社Webマーケティング事業部におけるWeb制作業務において、誰もが迷わず、品質の高いコーディングを行えることを目的とした社内規約です。
+Guideline này là quy định nội bộ nhằm giúp tất cả thành viên trong bộ phận Web Marketing của Công ty J-Line có thể thực hiện công việc sản xuất website một cách thống nhất, không gặp lúng túng và đảm bảo chất lượng cao trong quá trình coding.
 
-デザインの再現だけをゴールとせず、ユーザーにとって心地よい体験、更新者にとって扱いやすい構造、チーム全体での生産性の向上を実現するためのルールと思想をまとめています。
+Không chỉ đặt mục tiêu tái hiện lại thiết kế, tài liệu này còn tổng hợp các nguyên tắc và tư duy nhằm mang lại trải nghiệm thoải mái cho người dùng, cấu trúc dễ quản lý cho người cập nhật nội dung, đồng thời nâng cao năng suất làm việc của toàn bộ team.
 
-このガイドラインを活用することで、以下のような状態の実現を目指します：
+Thông qua việc áp dụng guideline này, chúng tôi hướng tới việc đạt được các trạng thái sau:
 
-- 誰が担当しても一定の品質を担保できる
-- 読みやすく整った構造により、属人性を排除
-- レビューや納品確認の手間を削減
-- 修正・運用に強く、将来のプロジェクトにも活用できるベースを整備
+- Đảm bảo chất lượng ổn định, bất kể ai là người phụ trách
+- Loại bỏ sự phụ thuộc vào cá nhân nhờ cấu trúc rõ ràng, dễ đọc
+- Giảm thiểu thời gian review và xác nhận bàn giao
+- Xây dựng nền tảng vững chắc cho việc chỉnh sửa・vận hành và tái sử dụng cho các dự án trong tương lai
+  
+## Tư duy cơ bản
 
-## 基本的な考え方
+- Thực hiện markup chính xác, tuân thủ theo tiêu chuẩn HTML của W3C
+- Các thẻ không mang ý nghĩa (như div, span…) chỉ sử dụng cho mục đích layout; tránh lồng (nest) quá nhiều hoặc tạo wrapper không cần thiết. Cần chú ý đến cấu trúc ngữ nghĩa của HTML và chủ động sử dụng các thẻ semantic khi phù hợp.
+- Thiết kế cấu trúc không bị vỡ khi nội dung tăng hoặc giảm.
+- Không chỉ tái hiện lại thiết kế, mà còn phải code theo hướng dễ cập nhật và dễ vận hành.
+- Cân nhắc môi trường truy cập của người dùng, đảm bảo layout không bị vỡ theo độ rộng container.
+- Khi upload bản test, phải ở trạng thái tương đương với lúc public chính thức.
 
-- W3CのHTML仕様に準拠した正しいマークアップを行うこと。
-- 意味を持たないタグ（divやspanなど）は、レイアウト目的に使用し、過剰なネストや不要なラッパーは避けること。HTMLの意味構造を意識し、使える場面では semanticタグを積極的に使用する。
-- コンテンツの増減で崩れない構造を意識する。
-- デザインを再現するだけではなく、更新性のよいコーディングをすること。
-- ユーザーの閲覧環境を考慮し、コンテナー幅で崩れないコーディングをすること。
-- テストアップ時には本番公開と同様の状態でアップすること。
-
-※撮影や原稿が不足している場合を除いて、テストアップ時にはダミーテキストやダミー画像が無い状態でアップすること。
-※スケジュールに遅延の可能性が生じた場合は、速やかに担当ディレクターおよびコーディングリーダーへ報告してください。
+※※ Trừ trường hợp thiếu hình ảnh chụp hoặc nội dung, khi upload bản test không được để lại dummy text hoặc dummy image.
+※Nếu có khả năng phát sinh chậm tiến độ, cần báo cáo ngay cho Director phụ trách và Coding Leader.
 
 
-# 基本の要素
+# Các thành phần cơ bản
 
-## HTMLに関して
+## Liên quan đến HTML
 
-### ファイル構成
+### Cấu trúc file
 
-- 下層ページはフォルダを作成しindex.htmlを入れる。URLがスラッシュで終わるようにすること（ https://ドメイン/○○/ ）
-- assetsフォルダ内にcss images js venderをいれる
-  - venderフォルダにはスライダーなどのプラグインのjs,cssをいれる
-- Sassファイルはサーバーにはアップしない
-- 不要なファイルや画像はサーバー並びにローカル環境から削除する
-- WordPressの設置ディレクトリは、設置配下がWordPressの管理配下となるため、WordPressフォルダを作成しその中に入れる
-  - 管理性を考慮してルート直下に index.php、.htaccess を設置し、WordPress本体は「wp-bridge2025」フォルダに格納すること。
-
+- Đối với các trang con, tạo folder riêng và đặt file index.html bên trong. URL phải kết thúc bằng dấu / （ https://ドメイン/○○/ ）
+- Thêm các thư mục css, images, js, vender bên trong thư mục assets.
+  - Trong thư mục vender, thêm các file js, css của plugin bên ngoài như slider, v.v.
+- Không upload file Sass lên server.
+- Xóa các file hoặc hình ảnh không cần thiết khỏi cả server và môi trường local.
+- Vì toàn bộ thư mục cài đặt sẽ nằm dưới sự quản lý của WordPress, cần tạo một folder riêng cho WordPress và đặt toàn bộ vào trong đó.
+  - Để đảm bảo tính quản lý, đặt index.php và .htaccess trực tiếp dưới thư mục root. Phần core của WordPress sẽ được lưu trong folder “wp-bridge2025”.
 [フォルダ構成例はこちら](https://docs.google.com/spreadsheets/d/1lPs7MtXUkwyGbCdF9wSgbP_I9lzZczuvFK6cSkhvAA4/edit#gid=261860441)
 
 
