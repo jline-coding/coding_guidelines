@@ -361,35 +361,33 @@ jQuery(window).on(‘scroll’,function(){})
 * Khi gán DOM vào biến, nên lưu class name thay vì lưu trực tiếp jQuery object, để dễ tái sử dụng và linh hoạt hơn
   
 ```js
-// （例）
+// （ví dụ）
 let newsLink = $(‘.js-news-tab-btn’);
 
-// ↓ 書き換える
+// ↓ viết lại
 
 const newsLink = ‘.js-news-tab-btn’;
 ```
 
-### アニメーションスピードについて
+### Về tốc độ animation
 
-* スライダーのスピードは指示がない限り３秒で設定する  
-* hoverアクションも指定がない限り `transition:0.5s all` で指定  
-
-
+* Tốc độ của slider: nếu không có chỉ thị cụ thể, thì thiết lập là 3 giây
+* Hiệu ứng hover cũng vậy, nếu không có chỉ định riêng, thì dùng`transition:0.5s all` 
 
 
-### 納品方法に関して
+### Liên quan đến phương pháp giao hàng
 
-納品方法は主に2通りになる。
-データのみを納品する「データ納品」
-直接クライアントのサーバーにファイルをアップする「本番公開（公開作業）」
-それぞれ納品方法が異なるため、予めどちらの方法で納品するのかをディレクターに確認をしておくこと。
+Có 2 cách giao hàng chính
+Chỉ bàn giao file dữ liệu
+Upload trực tiếp file lên server của khách hàng (công khai lên production（công việc công khai）)
+Vì mỗi cách bàn giao có quy trình khác nhau, nên cần xác nhận trước với director xem sẽ bàn giao theo cách nào
 
-### 納品の仕方
+### Cách thức giao hàng
 
-* データ納品・本番公開共に、納品する際は不要なファイルは含まないこと。
-* 公開作業の際は[「チェックリスト」](https://docs.google.com/spreadsheets/d/1_iD95RWSG4_AlToFlA80eeN0c0eMDW0rgP1ahh_aWuo/edit?gid=0#gid=0)を参考に確認しながら作業を進めること
+* Dù là bàn giao dữ liệu hay public lên server, khi bàn giao không được bao gồm các file không cần thiết.
+* Khi thực hiện public lên server, cần tham khảo  [「checklist」](https://docs.google.com/spreadsheets/d/1_iD95RWSG4_AlToFlA80eeN0c0eMDW0rgP1ahh_aWuo/edit?gid=0#gid=0) và kiểm tra từng bước trong khi làm
 
-#### データ納品
+#### giao data
 
 * いかなる時も納品データはJLのdropboxにも格納すること。
 * 不要なファイルは削除したうえで
