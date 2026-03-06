@@ -378,67 +378,59 @@ const newsLink = ‘.js-news-tab-btn’;
 ### Liên quan đến phương pháp giao hàng
 
 Có 2 cách giao hàng chính
-Chỉ bàn giao file dữ liệu
+Chỉ bàn giao file data
 Upload trực tiếp file lên server của khách hàng (công khai lên production（công việc công khai）)
 Vì mỗi cách bàn giao có quy trình khác nhau, nên cần xác nhận trước với director xem sẽ bàn giao theo cách nào
 
 ### Cách thức giao hàng
 
-* Dù là bàn giao dữ liệu hay public lên server, khi bàn giao không được bao gồm các file không cần thiết.
+* Dù là bàn giao data hay public lên server, khi bàn giao không được bao gồm các file không cần thiết.
 * Khi thực hiện public lên server, cần tham khảo  [「checklist」](https://docs.google.com/spreadsheets/d/1_iD95RWSG4_AlToFlA80eeN0c0eMDW0rgP1ahh_aWuo/edit?gid=0#gid=0) và kiểm tra từng bước trong khi làm
 
 #### giao data
 
-* いかなる時も納品データはJLのdropboxにも格納すること。
-* 不要なファイルは削除したうえで
-  1. 案件名のフォルダ＞「コーディングデータ」フォルダを作成
-  2. 作成したコーディングデータフォルダの中に指定のディレクトリ通りにファイルを入れる
-  3. 納品データの命名は以下のように設定
-     例：ver01-2026-04-01.zip
-  4.納品後に修正を行った場合は「ver02-日付」とし格納をすること。
-* ファイルはZip圧縮し、dropboxの共有URLを使って納品する。
-　ダウンロード期間は1週間、パスワードをかけて共有すること。
+* Trong mọi trường hợp, data giao phải được lưu vào dropbox của JL
+* Sau khi xóa các file không cần thiết
+  1. tạo cấu trúc thư mục 案件名のフォルダ＞「コーディングデータ」( dịch là  folder tên dự án＞「data coding」)
+  2. Bên trong folder data coding, đặt các file đúng theo cấu trúc thư mục được chỉ định.
+  3. đặt tên data giao hàng như sau
+     ví dụ：ver01-2026-04-01.zip
+  4. Nếu sau khi nộp mà có sửa thì đặt tên thành 「ver02- ngày」 rồi lưu vào
+* File phải nén thành Zip và dùng URL chia sẻ của dropbox để nộp
+　Thời gian download 1 tuần、phải đặt mật khẩu khi chia sẻ
 
-**差分納品の場合**
+**Trường hợp giao data dạng chênh lệch**
 
-* 修正作業などで、作業したファイルのみ納品する場合は下記手順を追加  
-  1. 修正前のデータのバックアップをとっておくこと  
-  2. 納品までに時差が生じる場合もあるため、どのファイルを修正したか、imgフォルダやcssファイルまで明確に記録しておくこと  
-  3. 修正後と修正前のフォルダを[チェックツール](https://qiita.com/frozencatpisces/items/8f998720de8f2aaa7e37)にかけ、納品漏れが無いように確認をする  
-※島田記載：差分データの用意の方法についてはベトナムチームで考案した内容に変更してください。
+* Nếu trong quá trình sửa chỉ cần nộp những file đã được chỉnh sửa, thì cần thực hiện thêm các bước sau
+  1. Backup data trước khi sửa
+  2. Vì có thể có sự chênh lệch thời gian trước khi nộp, nên phải ghi rõ file nào đã sửa, bao gồm cả thư mục img và file css 
+  3. Dùng công cụ check để so sánh thư mục trước và sau khi sửa, nhằm đảm bảo không bị thiếu file khi nộp [công cụ check](https://qiita.com/frozencatpisces/items/8f998720de8f2aaa7e37) 
+※Ghi chú của Shimada san：Về cách chuẩn bị data chênh lệch, hãy thay đổi theo phương pháp do team Việt Nam đề xuất
 
-#### 本番公開（公開作業）
+#### Công khai môi trường production（công việc công khai）
 
-* 案件発生時には以下を確認。
-・クライアントのFTP情報
-・接続テスト
-・アップ場所
-・旧データはサーバから削除するかどうかをディレクターに確認
+* Khi có task phát sinh, cần xác nhận các thông tin sau: thông tin FTP của khách hàng, kiểm tra kết nối, thư mục upload, xác nhận với director xem có xóa data cũ trên server hay không
+* Trường hợp site tĩnh, Tạo folder [old] trên server và di chuyển data cũ vào đó. Đồng thời, backup data và tạo folder [old] trên Dropbox để lưu trữ
+* Sau khi upload, dùng checklist để kiểm tra xem site có vấn đề gì không [「check list」](https://docs.google.com/spreadsheets/d/1_iD95RWSG4_AlToFlA80eeN0c0eMDW0rgP1ahh_aWuo/edit?gid=0#gid=0)
 
-* 静的サイトの場合、古いデータはサーバー内に[old]フォルダを作成しその中に収納する。またバックアップをとってdropboxに[old]フォルダを作成し保管する。
-* アップ後、サイトに問題がないか[「チェックリスト」](https://docs.google.com/spreadsheets/d/1_iD95RWSG4_AlToFlA80eeN0c0eMDW0rgP1ahh_aWuo/edit?gid=0#gid=0)を使って確認する
+*Trường hợp Wordpress**
 
-**WordPressの場合**
+* Backup WP cũ, bao gồm data  [「WPvivid」](https://ja.wordpress.org/plugins/wpvivid-backuprestore/) và file PHP, rồi lưu vào dropbox
+  * ※Khi xác nhận với khách hàng xong, có thể xóa data cũ trên server
 
-* 古いWPは[「WPvivid」](https://ja.wordpress.org/plugins/wpvivid-backuprestore/)データとphpファイルの両方のバックアップをとりdropboxに保管  
-  * ※クライアントに確認が取れ次第、古いデータはサーバー内から削除
+**Khi có thể publish trực tiếp trên server khách hàng**
 
-**クライアントのサーバーで公開作業ができる場合**
+1. Thay đổi URL site và công khai. Di chuyển thư mục wp từ thư mục con lên root directory → [site tham khảo](https://www.cloud9works.net/web/how-to-change-wordpress-directory/)
 
-1. サイトURLを変更し公開。wpフォルダから直下へディレクトリを移す → [参考サイト](https://www.cloud9works.net/web/how-to-change-wordpress-directory/)
+**Khi chuyển từ test server của JL**
 
-**ジェイ・ラインのテストサーバーで作業したものを移す場合**
+1. Cài WordPress trên server, dùng 「WPvivid」để migrate
 
-1. クライアントのサーバーにWPをインストール、テストWPの情報を「WPvivid」を使って移行
+### Về backup
 
-### バックアップに関して
-
-* テストアップ時のデータと公開後（納品後）のデータの2つをとり、dropboxに保管する  
-* WordPressの「WPvivid」データも納品時のものを保管しておくこと  
-* 納品後、都度修正が入ればdropboxに対応後のデータを格納すること（静的であれば差分データのみでよい）  
-
-
-
+* Lưu 2 bản backup vào dropbox:data lúc test upload và data sau khi publish
+* Data WPvivid của Wordpress dùng lúc giao hàng cũng cần lưu trữ
+* Sau khi nộp, nếu có sửa thì lưu data đã sửa vào dropbox（nếu là site tĩnh → chỉ cần lưu file chênh lệch）  
 
 
 ## レスポンシブ対応
