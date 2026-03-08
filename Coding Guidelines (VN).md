@@ -568,22 +568,22 @@ function remove_dashboard_widgets() {
 }
 add_action('wp_dashboard_setup', 'remove_dashboard_widgets');
 
-// ẩnicon ở toolbar phía trên của trang quản trị
+// ẩn icon ở toolbar phía trên của trang quản trị
 function hide_adminbar_update_icon() {
   global $current_user;
   get_currentuserinfo();
-  if ($current_user->user_login == 'お客様アカウントID') {
+  if ($current_user->user_login == 'ID tài khoản khách hàng') {
     global $wp_admin_bar;
     $wp_admin_bar->remove_menu('updates');
   }
 }
 add_action('wp_before_admin_bar_render', 'hide_adminbar_update_icon');
 
-// 更新通知非表示
+// ẩn thông báo cập nhật
 function update_message_admin_only() {
   global $current_user;
   get_currentuserinfo();
-  if ($current_user->user_login == 'お客様アカウントID') {
+  if ($current_user->user_login == 'ID tài khoản khách hàng') {
     add_filter('pre_site_transient_update_core', '__return_zero');
     remove_action('wp_version_check', 'wp_version_check');
     remove_action('admin_init', '_maybe_update_core');
@@ -592,238 +592,237 @@ function update_message_admin_only() {
 add_action('admin_init', 'update_message_admin_only');
 ```
 
-### プラグインに関して
+### Về plugin
 
-ジェイ・ラインでは下記のプラグインを推奨しています。
+Tại J-line chúng tôi khuyến nghị sử dụng những plugin dưới đây
 
-#### フィールドごとに項目を分ける際
+#### Khi phân chia các mục theo field
 
 - ［Advanced Custom Fields］  
   [https://ja.wordpress.org/plugins/advanced-custom-fields/](https://ja.wordpress.org/plugins/advanced-custom-fields/)  
-  Proのプラグインデータはdropboxに格納しているのでご使用ください。
+  Data plugin bản Pro được lưu tại Dropbox, vui lòng sử dụng từ đó
 
-#### 投稿タイプを作成する際
+#### Khi tạo post type
 
 - ［Custom Post Type UI］  
   [https://ja.wordpress.org/plugins/custom-post-type-ui/](https://ja.wordpress.org/plugins/custom-post-type-ui/)  
-- phpファイルで投稿タイプを作成するでも可
+- Cũng có thể xây dựng post type bằng file php
 
-#### 記事・カテゴリなどの視覚的な並び替えの際
+#### Khi sắp xếp thứ tự bài viết, category một cách trực quan
 
 - ［Intuitive Custom Post Order］  
   [https://hijiriworld.com/web/plugins/intuitive-custom-post-order/](https://hijiriworld.com/web/plugins/intuitive-custom-post-order/)
 
-#### フォーム作成の際
+#### Khi xây dựng form
 
 - ［Contact Form 7］  
   [https://ja.wordpress.org/plugins/contact-form-7/](https://ja.wordpress.org/plugins/contact-form-7/)  
 - [詳しくはこちら](https://www.jlweb.jp/coding/basic/form/)
 
-#### データの移行をする際
+#### Khi thực hiện di chuyển data
 
 - ［WPvivid］  
   [https://ja.wordpress.org/plugins/wpvivid-backuprestore/](https://ja.wordpress.org/plugins/wpvivid-backuprestore/)  
 
-#### データのバックアップ
+#### Back-up data
 
 - ［BackWPup – WordPress Backup Plugin］  
   [https://ja.wordpress.org/plugins/backwpup/](https://ja.wordpress.org/plugins/backwpup/)  
-- デフォルト設定：保存のタイミングは月に１回、上限12ファイル
-- ドメイン切り替え前のサイト等はうまくバックアップをとれないことがある（エラーが出る）ので切り替え後に設定
+- Cài đặt mặc định: thời điểm lưu trữ là mỗi tháng 1 lần, tối đa 12 file
+- Đối với các website trước khi chuyển đổi domain, đôi khi không thể backup đúng cách (xảy ra lỗi) vì vậy hãy thiết lập sau khi đã chuyển đổi domain
 
-#### ログインセキュリティ
+#### Login security
 
 - 「SiteGuard WP Plugin」  
   [https://ja.wordpress.org/plugins/siteguard/](https://ja.wordpress.org/plugins/siteguard/)  
-- ログインセキュリティのプラグインは必ず設置すること
+- Bắt buộc cài đặt plugin login security
 
-#### SEO/OGP関連
+#### Liên quan đến SEO/OGP
 
 - 「SEO SIMPLE PACK」  
   [https://ja.wordpress.org/plugins/seo-simple-pack/](https://ja.wordpress.org/plugins/seo-simple-pack/)  
-- SEO系のタグやOGPタグを設置する際に使用します。
+- Sử dụng khi cài đặt các thẻ liên quan đến SEO, thẻ OGP
 
 
-### 情報の一部移行する作業が発生した場合
+### Khi phát sinh việc di chuyển một phần thông tin/dữ liệu
 
-- 「DeMomentSomTres Export」というプラグインを使用する
-- WP内の「インポート」機能では情報が全て移らないエラーが起こる可能性があるため
+- Sử dụng plugin「DeMomentSomTres Export」
+- Vì khi sử dụng chức năng「import」trong WP thì có khả năng xảy ra lỗi không chuyển được toàn bộ thông tin/dữ liệu
 
-**参考：**
+**Tham khảo：**
 
 - [https://naifix.com/wordpress-transfer/](https://naifix.com/wordpress-transfer/)
 - [https://easytouse.jp/2018/03/28/demomentsomtresexport/](https://easytouse.jp/2018/03/28/demomentsomtresexport/)
 
 
-### WPマニュアルの作成に関して
+### Về việc tạo manual WP
 
-- マニュアルサンプルを参考にしてマニュアルを作成すること。
+- Tham khảo mẫu manual để viết manual 
 
-[サンプルDLはこちら](https://www.jlweb.jp/coding/assets/dl/manual_sample.pptx)
-
-
+[Download mẫu từ đây](https://www.jlweb.jp/coding/assets/dl/manual_sample.pptx)
 
 
-## Formに関して
 
-### メールフォームに関して
 
-ジェイ・ラインでは、お問合わせや申し込みフォームを作成する際、下記システムを導入しています。
+## Về Form
 
-#### メールフォームプロCGI（静的サイトで使用）
+### Về mail form 
 
-- Downloadサイト：  
+Tại J-line chúng tôi sử dụng những hệ thống dưới đây khi xây dựng form liên hệ hoặc form đăng kí
+
+#### Mailform pro CGI（Sử dụng trong những site tĩnh）
+
+- Site download：  
   [https://www.synck.com/downloads/cgi-perl/mailformpro/index.html](https://www.synck.com/downloads/cgi-perl/mailformpro/index.html)
-- 最新バージョンをダウンロードして使用すること
-- フォーム動作しない場合は、サーバのパーミッションを再度確認
-- 使用サーバのPerlパスを確認し、`mailformpro.cgi` の1行目を変更する必要がある場合があります
-- 複数CC宛先の設定方法：  
+- Phải download và sử dụng phiên bản mới nhất
+- Trường hợp form không hoạt động, hãy kiểm tra lại quyền của server
+- Có trường hợp cần kiểm tra đường dẫn Perl của server đang sử dụng và chỉnh sửa dòng đầu tiên của`mailformpro.cgi` 
+- Cách thiết lập nhiều địa chỉ CC ：  
   [https://www.synck.com/downloads/faq/mailform/thread_tCvQ2v9RXHdq4m-UF88S3Q.html](https://www.synck.com/downloads/faq/mailform/thread_tCvQ2v9RXHdq4m-UF88S3Q.html)
-- reCAPTCHAの設定：  
-  [Dropboxリンク](https://www.dropbox.com/scl/fo/vuylj8e6vnucet8w3na82/ABPn2cs3VNjG8STZk2cM8xQ?rlkey=yc67cb9yur6pl7ohxumh2lrzw&st=7yegcf9e&dl=0)
-- [操作方法はこちら（PPTX）](https://www.jlweb.jp/coding/assets/dl/mailform_pro.pptx)
-- [サンプルはこちら（ZIP）](https://www.jlweb.jp/coding/assets/dl/contact.zip)
+- Cài đặt reCAPTCHA：  
+  [Link Dropbox](https://www.dropbox.com/scl/fo/vuylj8e6vnucet8w3na82/ABPn2cs3VNjG8STZk2cM8xQ?rlkey=yc67cb9yur6pl7ohxumh2lrzw&st=7yegcf9e&dl=0)
+- [Cách thao tác xem tại đây（PPTX）](https://www.jlweb.jp/coding/assets/dl/mailform_pro.pptx)
+- [Mẫu tại đây（ZIP）](https://www.jlweb.jp/coding/assets/dl/contact.zip)
 
 
-#### レスポンシブメールフォーム（静的サイトで使用）
+#### Responsive mailform（Sử dụng trong những site tĩnh）
 
-- メールフォームプロが使用できない場合のみ利用（確認画面はポップアップのみ）
-- 確認画面付きは有料
-- Downloadサイト：  
+- Chỉ dùng trong trường hợp không sử dụng được mailform pro（màn hình xác nhận chỉ là pop-up）
+- Chức năng trang xác nhận là tính phí
+- Site download：  
   [https://www.1-firststep.com/archives/462](https://www.1-firststep.com/archives/462)
-- 最新バージョンをダウンロードして使用すること
-- 注意：
-  - 確認画面は簡易ポップアップのみ
-  - クライアント・ディレクターに確認画面がない旨を伝える
-  - PHP対応サーバーでないと動作しない
+- Phải download bản mới nhất để sử dụng
+- Chú ý：
+  - Màn hình xác nhận chỉ là pop-up đơn giản
+  - Phải thông báo về việc không có trang xác nhận cho khách hàng và director
+  - Không hoạt động được trên những server không hỗ trợ PHP
 
-#### Contact Form 7（WPサイトで使用）
+#### Contact Form 7（Sử dụng trên site WP）
 
-- 確認画面は不要
-- 入力文字数が400～500文字を超えると自動返信メールに内容が反映されない（無料版の制限）
-- 追加ヘッダー `Reply-To` 設定：
-  - 管理者用：ユーザー入力のメールアドレスを設定
-  - ユーザー用：空欄のまま
-- `Reply-To` を設定すると返信ボタンで正しい宛先が指定される
-- `Reply-To` を削除していると送信元アドレスが返信先に設定される
+- Không cần màn hình xác nhận
+- Nếu số lượng text nhập vào vượt quá 400-500 chữ thì nội dung sẽ không được hiển thị vào mail trả lời tự động (giới hạn của bản miễn phí)
+- Cài đặt ở mục 追加ヘッダー `Reply-To` ：
+  - Dùng cho admin：cài đặt địa chỉ mail mà người dùng nhập vào
+  - ユーザー用：để trống
+- Nếu thiết lập `Reply-To`, khi nhấn nút Reply thì địa chỉ người nhận đúng sẽ được chỉ định
+- Nếu xóa `Reply-To`, khi nhấn Reply thì địa chỉ người gửi (From) sẽ được chỉ định làm địa chỉ nhận phản hồi
 
-#### 【開発終了】MWWPForm
+#### 【Đã ngừng phát triển】MWWPForm
 
-- 使用しない。適宜 Contact Form 7 に変更すること
+- Không sử dụng. Hãy thay đổi sang Contactform 7 khi cần thiết.
 
-### フォーム共通設定・注意事項
+### Cài đặt chung và các lưu ý của form
 
-- エラー画面・完了画面を実装すること、確認画面は不要
-- テスト送信には `kensho@j-line` を使用すること
-- 管理者アドレスをクライアントのアドレスに変更後、内容は適切に送信テストすること
-- 自動返信メールを設定すること（原稿はダミーで用意）
-- 郵便番号入力がある場合は住所自動入力設定を行うこと
-- 送信確認画面もデザインに合わせて装飾すること
-- 完了画面には「TOPに戻る」ボタンを設置すること
-- reCAPTCHAの設定を必ず行うこと
-
-
-
-## ページスピードに関して
-
-### 表示速度の目的と考え方
-
-納品物の品質指標として「表示スピード」を設定し、ユーザー体験とサービス品質の底上げを目指します。
-ただし表示速度は以下のような外部要因に左右されるため、一律の数値基準を設けることは現実的ではありません。
-
-- サーバースペックやCDNの有無
-- デザインの構成や複雑さ
-- アニメーション・演出表現の有無
-
-よって、本ガイドラインでは「一定の基準値と改善方針」を示し、最低限の品質担保と再現性の確保を目的とします。
-
-#### Lighthouseスコア・LCPについての補足
-
-Google Lighthouse の「パフォーマンススコア」や LCP（Largest Contentful Paint）値は、低速4G回線・低スペック端末を想定した“ラボ環境”での測定です。
-そのため、実際のユーザー環境とは大きく乖離することがあり、スコアが厳しく出ることがあります。
-
-### 基本方針
-
-構築初期段階においては、ラボスコアよりも実環境での体感速度（LCP）を重視してください。
-Lighthouseスコアは参考値として扱い、最終的にはUXとして「重く感じない」ことを優先します。
-
-### 実測値の計測方法 （Chrome DevTools 使用）
-
-1. Chromeで対象ページを開く
-2. 「ネットワーク」タブ → スロットリングを「Fast 4G」、キャッシュ無効化にチェック
-3. 「パフォーマンス」タブを開き、「記録（◉）」をクリック
-4. ページをリロードし、読み込み完了後に「停止」
-4. タイムライン上の「LCP」マーカーにマウスオーバーし、秒数を確認
-
-LCP（実測目安）：4秒以内 （※今後の運用で再調整可）
-
-※構造や演出上どうしてもLCPが遅くなる場合（例：JS描画のカルーセルなど）は、プレロード・事前描画の検討、または体感的な快適性を重視して例外対応としてください。
+- Phải xây dựng màn hình lỗi và màn hình hoàn tất, không cần màn hình xác nhận
+- Khi test gửi form, sử dụng địa chỉ `kensyo@j-line` 
+- Sau khi đổi địa chỉ quản trị sang email của client, cần test gửi để đảm bảo nội dung được gửi đúng
+- Phải thiết lập email trả lời tự động (nội dung thì chuẩn bị bản dummy)
+- Trường có nhập mã bưu điện, cần thiết lập chức năng tự động điền địa chỉ
+- Màn hình xác nhận gửi cũng phải được trang trí theo thiết kế
+- Trên màn hình hoàn tất, phải đặt nút「Quay lại trang TOP」
+- Bắt buộc cài đặt reCAPTCHA
 
 
+
+## Về Page speed
+
+### Mục đích và cách tiếp cận đối với tốc độ hiển thị
+
+Thiết lập “tốc độ hiển thị” làm chỉ số chất lượng của sản phẩm bàn giao, nhằm nâng cao trải nghiệm người dùng và chất lượng dịch vụ.
+Tuy nhiên, vì tốc độ hiển thị chịu ảnh hưởng bởi các yếu tố bên ngoài như dưới đây, nên việc đặt ra một tiêu chuẩn số liệu cố định áp dụng chung là không thực tế.
+
+- Cấu hình server và có hay không có CDN
+- Cấu trúc và mức độ phức tạp của thiết kế
+- Có hay không có animation, hiệu ứng trình diễn
+
+Vì vậy, trong guideline này sẽ đưa ra「mức tiêu chuẩn nhất định và phương hướng cải thiện」với mục đích đảm bảo chất lượng tối thiểu và khả năng đạt được kết quả tương tự
+
+#### Bổ sung về điểm số Lighthouse và LCP
+
+Điểm 「Performance Score」 của Google Lighthouse và giá trị LCP (Largest Contentful Paint) được đo trong môi trường thử nghiệm, giả định kết nối 4G tốc độ thấp và thiết bị có cấu hình thấp.
+
+
+### Phương châm cơ bản
+
+Ở giai đoạn đầu của quá trình xây dựng, hãy ưu tiên tốc độ cảm nhận trong môi trường thực tế (LCP) hơn là điểm số trong môi trường lab.
+Điểm Lighthouse chỉ nên xem như giá trị tham khảo, và cuối cùng nên ưu tiên trải UX, tức là người dùng không cảm thấy trang web bị nặng hoặc chậm.
+
+### Cách đo giá trị thực tế (sử dụng Chrome DevTools)
+
+1. Mở trang cần kiểm tra bằng Chrome
+2. Mở tab 「Network」 → đặt Throttling thành 「Fast 4G」 và check vào Disable cache
+3. Mở tab 「Performance」 và nhấn Record (◉)
+4. Reload trang, sau khi tải xong thì nhấn 「Stop」
+4. Di chuột vào marker 「LCP」 trên timeline để kiểm tra số giây
+
+LCP（mốc tham khảo khi đo thực tế）：trong vòng 4 giây （※Có thể điều chỉnh lại trong quá trình vận hành sau này）
+
+※Trong trường hợp do cấu trúc hoặc hiệu ứng mà LCP khó tránh khỏi bị chậm (ví dụ: carousel được render bằng JS), hãy xem xét preload hoặc render trước (pre-render) hoặc áp dụng ngoại lệ với tiêu chí ưu tiên trải nghiệm cảm nhận thực tế của người dùng.
 
 
 
 
-## 公開作業時
 
-### リダイレクト作業に関して
+## Khi thực hiện công khai website
 
-- 基本は`.htaccess`でリダイレクト設定
-- リニューアルの場合、旧サイトと同じ役割で且つ、ディレクトリが変わったページのリダイレクト作業を行う  
-  [リダイレクトシート活用](https://docs.google.com/spreadsheets/d/1tvqfKhwBKZzJ4tfdFtiqOZS0i336dTGzRyVek49CWdg/edit?gid=882195015#gid=882195015) 
-- 旧サイトにのみあるディレクトリのページは404のエラーページへ飛ぶように設定する。
-- `http`から`https`へのリダイレクト作業を行う（SSL設定がされているかどうか確認する）
-- `www`あり、無しのリダイレクト作業
-- 新規ドメインの場合は、`www`無しで統一。既存ドメインの場合は今の仕様に合わせる。
-- ⚠️ クライアントの希望によってリダイレクト作業を実施
+### Về công việc redirect
 
-### WPのプラグイン
+- Về cơ bản, thiết lập redirect bằng `.htaccess`
+- Trong trường hợp renewal website, cần thiết lập redirect cho các trang có cùng chức năng với site cũ nhưng đã thay đổi đường dẫn  
+  [sheet sử dụng cho công việc redirect](https://docs.google.com/spreadsheets/d/1tvqfKhwBKZzJ4tfdFtiqOZS0i336dTGzRyVek49CWdg/edit?gid=882195015#gid=882195015) 
+- Các trang có đường dẫn chỉ tồn tại trên site cũ cần được thiết lập chuyển đến trang 404
+- Thực hiện thiết lập redirect `http` sang `https` (cần kiểm tra xem SSL đã được thiết lập hay chưa).
+- Thực hiện redirect có và không có `www`
+- Trường hợp domain mới thì thống nhất không có `www`. Trường hợp domain có sẵn thì làm theo cấu hình hiện có.
+- ⚠️ Thực hiện công việc redirect theo yêu cầu của khách hàng
 
-| 用途 | プラグイン名 |
+### Plugin WP
+
+| Mục đích sử dụng | Tên plugin |
 |------|---------------|
-| `http → https`の切り替えや`.htaccess`でエラーが出る場合に使用 | [Really Simple SSL](https://ja.wordpress.org/plugins/really-simple-ssl/)  |
+| Sử dụng khi chuyển đổi `http → https` hoặc khi xảy ra lỗi với`.htaccess` | [Really Simple SSL](https://ja.wordpress.org/plugins/really-simple-ssl/)  |
 
 
 
-## テキスト類テンプレート
+## Template các loại text
 
-### フォーム関連
+### Liên quan đến form
 
-| 項目 | ダウンロードリンク |
+| Mục | Link download |
 |------|-------------------|
-| 完了画面テキスト | [完了画面テキスト](https://www.jlweb.jp/coding/assets/dl/thanks_page_text.txt)  |
-| 自動返信メール | [自動返信メール](https://www.jlweb.jp/coding/assets/dl/mail_text.txt)  |
-| プライバシーポリシー | [プライバシーポリシー](https://www.jlweb.jp/coding/assets/dl/privacy_policy.txt)  |
-| お知らせ投稿 | [お知らせ投稿（PDF）](https://www.jlweb.jp/coding/assets/dl/news.pdf)  |
+| Text ở màn hình hoàn tất | [Text ở màn hình hoàn tất](https://www.jlweb.jp/coding/assets/dl/thanks_page_text.txt)  |
+| Mail phản hồi tự động | [Mail phản hồi tự động](https://www.jlweb.jp/coding/assets/dl/mail_text.txt)  |
+| Chính sách bảo mật | [Chính sách bảo mật](https://www.jlweb.jp/coding/assets/dl/privacy_policy.txt)  |
+| Bài đăng thông báo | [Bài đăng thông báo（PDF）](https://www.jlweb.jp/coding/assets/dl/news.pdf)  |
 
-### WPマニュアル
+### WP manual
 
-[サンプルDLはこちら（PPTX）](https://www.jlweb.jp/coding/assets/dl/manual_sample.pptx) 
-
-
+[Download mẫu từ đây（PPTX）](https://www.jlweb.jp/coding/assets/dl/manual_sample.pptx) 
 
 
-## コード・画像類テンプレート
 
-### コーディングテンプレート
 
-- [HTMLデータ（zip）](https://www.jlweb.jp/coding/assets/dl/html.zip)   
-- [WordPressデータ（zip）](https://www.jlweb.jp/coding/assets/dl/wp_theme.zip)   
-- Wardpressのカスタマイテーマのphpファイル  
-- テンプレート内には案件によっては不要な内容もあるので臨機応変に不要なものは消してください
+## Template code và hình ảnh
 
-### ダミーファイル類
+### Template coding
 
-- フォームで添付機能の送信テストの際に使用するダミーデータ
+- [HTML data（zip）](https://www.jlweb.jp/coding/assets/dl/html.zip)   
+- [WordPress data（zip）](https://www.jlweb.jp/coding/assets/dl/wp_theme.zip)   
+- File php của custom theme trong Wordpress 
+- Trong template có thể có những nội dung không cần thiết tùy theo từng dự án, vì vậy hãy linh hoạt xóa những phần không cần thiết
 
-| ファイル形式 | リンク |
+### Các loại file dummy
+
+- Data dummy dùng khi test chức năng gửi file đính kèm trong form.
+
+| Định dạng file | Link |
 |--------------|--------|
-| Excel | [ダミーExcel](https://www.jlweb.jp/coding/assets/dl/dummy.xlsx)  |
-| PDF   | [ダミーPDF](https://www.jlweb.jp/coding/assets/dl/dummy.pdf)  |
-| Word  | [ダミーDocx](https://www.jlweb.jp/coding/assets/dl/dummy.docx)  |
+| Excel | [Dummy Excel](https://www.jlweb.jp/coding/assets/dl/dummy.xlsx)  |
+| PDF   | [Dummy PDF](https://www.jlweb.jp/coding/assets/dl/dummy.pdf)  |
+| Word  | [Dummy Docx](https://www.jlweb.jp/coding/assets/dl/dummy.docx)  |
 
-### ダミー画像
+### Hình ảnh dummy
 
-- WPのアイキャッチなどで画像が設定されていない場合に表示するダミー画像
+- Hình ảnh dummy hiển thị khi không có ảnh được thiết lập, ví dụ hình eye-catch
 
-- [ダミー画像（no-image.jpg）](https://www.jlweb.jp/coding/assets/dl/no-image.jpg) 
+- [Hình dummy（no-image.jpg）](https://www.jlweb.jp/coding/assets/dl/no-image.jpg) 
