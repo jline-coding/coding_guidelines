@@ -728,6 +728,7 @@ add_action('admin_init', 'update_message_admin_only');
   - ユーザー用：空欄のまま
 - `Reply-To` を設定すると返信ボタンで正しい宛先が指定される
 - `Reply-To` を削除していると送信元アドレスが返信先に設定される
+- reCAPTCHAのキーを作成し、Jlineのドメインおよび顧客のドメインを追加します。
 
 #### 【開発終了】MWWPForm
 
