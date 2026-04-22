@@ -706,6 +706,7 @@ Tại J-line chúng tôi sử dụng những hệ thống dưới đây khi xây
   - ユーザー用：để trống
 - Nếu thiết lập `Reply-To`, khi nhấn nút Reply thì địa chỉ người nhận đúng sẽ được chỉ định
 - Nếu xóa `Reply-To`, khi nhấn Reply thì địa chỉ người gửi (From) sẽ được chỉ định làm địa chỉ nhận phản hồi
+- Tạo key reCAPTCHA và thêm domain jline cùng domain của khách hàng.
 
 #### 【Đã ngừng phát triển】MWWPForm
 
