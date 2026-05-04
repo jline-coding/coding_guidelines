@@ -477,7 +477,7 @@ const modalTrigger = '.js-modal-open';
 * Nguyên tắc chung: không viết trực tiếp JavaScript trong file HTML. Phải quản lý dưới dạng file bên ngoài
 * Mỗi xử lý (function / action) phải có comment, sử dụng tiếng Anh hoặc tiếng Nhật
 * File JS (bao gồm cả việc load file JS ngoài) phải được khai báo trong các file dùng chung như header.php, footer.php
-* Khi load file JS phải thêm thuộc tính defer 
+* Đặt các thẻ gọi file JS bên trong `<head>` và thêm thuộc tính `defer`. Việc này giúp không chặn quá trình render HTML (khi đó script sẽ được tải ngầm và chỉ thực thi theo đúng thứ tự sau khi DOM đã hoàn tất).
   ví dụ：`<script src=“./assets/plugins/anijs/ani.js” defer></script>`  
 * Hạn chế sử dụng CDN ※CDN của jQuery đôi khi load chậm, có thể gây lỗi hiển thị giao diện
 * Những đoạn JS được sử dụng cho toàn bộ hoặc hầu hết các trang phải được gom lại và viết trong common.js

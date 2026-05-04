@@ -483,7 +483,7 @@ const modalTrigger = '.js-modal-open';
 * 原則htmlファイルに直接スタイルを書かない。外部ファイルとして管理する  
 * 各動作(処理)にはコメントを付けるが英語、または日本語を使用すること
 * JSファイルはheader.phpやfooter.phpなど共通化ファイルに記載すること（外部JavaScriptファイルの読み込みも）  
-* JSファイルにはdeferをつける  
+* JSファイルは`<head>`内に記述し、`defer`属性を付与する。これによりHTMLのレンダリングをブロックせず、DOMの構築完了後に順番通りにスクリプトが実行されます。
   例：`<script src=“./assets/plugins/anijs/ani.js” defer></script>`  
 * CDN利用を控える ※jQueryのCDNは稀に読み込みが遅くなって表示が崩れたりするケースがある。  
 * 全て、もしくはほとんどのページで使用するものはcommon.jsにまとめて記述する  
