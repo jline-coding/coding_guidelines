@@ -477,8 +477,13 @@ const modalTrigger = '.js-modal-open';
 * Nguyên tắc chung: không viết trực tiếp JavaScript trong file HTML. Phải quản lý dưới dạng file bên ngoài
 * Mỗi xử lý (function / action) phải có comment, sử dụng tiếng Anh hoặc tiếng Nhật
 * File JS (bao gồm cả việc load file JS ngoài) phải được khai báo trong các file dùng chung như header.php, footer.php
-* Đặt các thẻ gọi file JS bên trong `<head>` và thêm thuộc tính `defer`. Việc này giúp không chặn quá trình render HTML (khi đó script sẽ được tải ngầm và chỉ thực thi theo đúng thứ tự sau khi DOM đã hoàn tất).
-  ví dụ：`<script src=“./assets/plugins/anijs/ani.js” defer></script>`  
+* **Vị trí đặt file JS và thuộc tính `defer`**:
+  * **Mặc định (Khuyên dùng)**: Đặt các thẻ gọi file JS bên ngoài (có `src`) vào bên trong `<head>` và thêm thuộc tính `defer`. Việc này giúp không chặn quá trình render HTML (script tải ngầm và chỉ thực thi theo đúng thứ tự sau khi DOM đã hoàn tất).
+    ví dụ：`<script src="./assets/plugins/anijs/ani.js" defer></script>`
+  * **Trường hợp KHÔNG dùng `defer`**:
+    * Các script cần chạy ngay lập tức trước khi HTML render (ví dụ: script chống chớp màn hình dark/light mode, redirect). -> *Đặt trong `<head>`, không có `defer`.*
+    * Các công cụ Tracking/Analytics (Google Analytics, GTM, Facebook Pixel). -> *Thường dùng thuộc tính `async` vì chúng không cần chờ DOM và thứ tự thực thi không quan trọng.*
+    * Inline script (Thẻ `<script>` viết code trực tiếp, không có `src`). -> *Hạn chế tối đa việc sử dụng inline script, chỉ dùng khi thật sự cần thiết. Lưu ý: Nếu inline script cần sử dụng thư viện (như jQuery) đã được load bằng `defer`, thì bắt buộc code bên trong phải được bọc bởi `jQuery(function($){...})` hoặc `DOMContentLoaded` để đảm bảo thư viện đã sẵn sàng.*
 * Hạn chế sử dụng CDN ※CDN của jQuery đôi khi load chậm, có thể gây lỗi hiển thị giao diện
 * Những đoạn JS được sử dụng cho toàn bộ hoặc hầu hết các trang phải được gom lại và viết trong common.js
 
@@ -681,66 +686,127 @@ Vì mỗi cách bàn giao có quy trình khác nhau, nên cần xác nhận trư
   Khi cần thiết hãy sử dụng những nội dung dưới đây trong `functions.php` 
 
 ```php
+// Hàm kiểm tra phân quyền để ẩn các tính năng admin
+function is_restricted_admin_user() {
+  $user = wp_get_current_user();
+  if ( ! $user || ! $user->exists() ) {
+    return false;
+  }
+
+  // Danh sách Role áp dụng (Role là Editor, có thể thay đổi và thêm role khác tại đây)
+  $restricted_roles = array(
+    'editor',
+  );
+
+  // Kiểm tra theo Role
+  if ( array_intersect( $restricted_roles, (array) $user->roles ) ) {
+    return true;
+  }
+  return false;
+}
+
 // ẩn site menu
 function remove_menus() {
-  global $current_user;
-  get_currentuserinfo();
-  if ($current_user->user_login == 'ID tài khoản khách hàng（ví dụ：writer-test）') {
-    remove_menu_page('edit.php'); // post
-    remove_menu_page('upload.php'); // media
-    remove_menu_page('edit.php?post_type=page'); // pages
-    remove_menu_page('edit-comments.php'); // comment
-    remove_menu_page('themes.php'); // appearance
-    remove_menu_page('plugins.php'); // plugin
-    remove_submenu_page('index.php', 'update-core.php');
-    remove_menu_page('users.php'); // user
-    remove_menu_page('tools.php'); // tool
-    remove_menu_page('options-general.php'); // setting
-    remove_menu_page('wpcf7'); // contactform7
+  if ( is_restricted_admin_user() ) {
     remove_menu_page('ai1wm_export'); // wp migration
     remove_menu_page('cptui_main_menu'); // CPT UI
+    remove_menu_page('edit-comments.php'); // comment
+    remove_menu_page('edit.php'); // post
+    remove_menu_page('edit.php?post_type=page'); // pages
+    remove_menu_page('options-general.php'); // setting
+    remove_menu_page('plugins.php'); // plugin
     remove_menu_page('siteguard'); // site Guard
+    remove_menu_page('themes.php'); // appearance
+    remove_menu_page('tools.php'); // tool
+    remove_menu_page('upload.php'); // media
+    remove_menu_page('users.php'); // user
+    remove_menu_page('wpcf7'); // contactform7
+    remove_submenu_page('index.php', 'update-core.php');
   }
 }
-add_action('admin_menu', 'remove_menus');
+// Set priority 999 để đảm bảo ghi đè được các plugin thêm menu chạy sau
+add_action('admin_menu', 'remove_menus', 999);
 
 // ẩn dashboard
 function remove_dashboard_widgets() {
-  global $current_user;
-  get_currentuserinfo();
-  if ($current_user->user_login == 'ID tài khoản khách hàng') {
+  if ( is_restricted_admin_user() ) {
     remove_action('admin_notices', 'update_nag', 3);
-    remove_meta_box('dashboard_site_health', 'dashboard', 'normal'); // site health status
+    remove_action('network_admin_notices', 'update_nag', 3); // Chuẩn: Ẩn thêm nag trên network (nếu có multisite)
     remove_meta_box('dashboard_activity', 'dashboard', 'normal'); // activity
-    remove_meta_box('dashboard_right_now', 'dashboard', 'normal'); // at a glance
-    remove_meta_box('dashboard_quick_press', 'dashboard', 'side'); // quick press
     remove_meta_box('dashboard_primary', 'dashboard', 'side'); // WordPress event và news
+    remove_meta_box('dashboard_quick_press', 'dashboard', 'side'); // quick press
+    remove_meta_box('dashboard_right_now', 'dashboard', 'normal'); // at a glance
+    remove_meta_box('dashboard_site_health', 'dashboard', 'normal'); // site health status
   }
 }
-add_action('wp_dashboard_setup', 'remove_dashboard_widgets');
+add_action('wp_dashboard_setup', 'remove_dashboard_widgets', 999);
 
 // ẩn icon ở toolbar phía trên của trang quản trị
 function hide_adminbar_update_icon() {
-  global $current_user;
-  get_currentuserinfo();
-  if ($current_user->user_login == 'ID tài khoản khách hàng') {
+  if ( is_restricted_admin_user() ) {
     global $wp_admin_bar;
     $wp_admin_bar->remove_menu('updates');
   }
 }
-add_action('wp_before_admin_bar_render', 'hide_adminbar_update_icon');
+add_action('wp_before_admin_bar_render', 'hide_adminbar_update_icon', 999);
 
-// ẩn thông báo cập nhật
+// ẩn thông báo cập nhật (PHP 8 Safe & Standard)
 function update_message_admin_only() {
-  global $current_user;
-  get_currentuserinfo();
-  if ($current_user->user_login == 'ID tài khoản khách hàng') {
-    add_filter('pre_site_transient_update_core', '__return_zero');
-    remove_action('wp_version_check', 'wp_version_check');
+  if ( is_restricted_admin_user() ) {
+    add_filter('pre_site_transient_update_core', '__return_null'); // Chuẩn WP: trả về null thay vì zero
     remove_action('admin_init', '_maybe_update_core');
+    remove_action('wp_version_check', 'wp_version_check');
   }
 }
-add_action('admin_init', 'update_message_admin_only');
+add_action('admin_init', 'update_message_admin_only', 999);
+
+// Chặn truy cập trực tiếp bằng URL đối với các trang đã ẩn
+function block_direct_access_to_hidden_pages() {
+  if ( is_restricted_admin_user() ) {
+    global $pagenow;
+
+    // Danh sách các file mặc định bị cấm
+    $restricted_pages = array(
+      'edit-comments.php',
+      'options-general.php',
+      'plugins.php',
+      'themes.php',
+      'tools.php',
+      'upload.php',
+      'users.php',
+      'update-core.php'
+    );
+
+    if ( in_array( $pagenow, $restricted_pages, true ) ) {
+      wp_redirect( admin_url() );
+      exit;
+    }
+
+    // Xử lý riêng cho edit.php (chỉ cấm truy cập Post và Page)
+    if ( $pagenow === 'edit.php' ) {
+      $post_type = isset($_GET['post_type']) ? $_GET['post_type'] : 'post';
+      if ( $post_type === 'post' || $post_type === 'page' ) {
+        wp_redirect( admin_url() );
+        exit;
+      }
+    }
+
+    // Chặn các trang của plugin
+    if ( $pagenow === 'admin.php' && isset( $_GET['page'] ) ) {
+      $restricted_plugin_pages = array(
+        'ai1wm_export',
+        'cptui_main_menu',
+        'siteguard',
+        'wpcf7'
+      );
+      if ( in_array( $_GET['page'], $restricted_plugin_pages, true ) ) {
+        wp_redirect( admin_url() );
+        exit;
+      }
+    }
+  }
+}
+add_action( 'admin_init', 'block_direct_access_to_hidden_pages', 999 );
 ```
 
 ### Về plugin

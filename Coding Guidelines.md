@@ -483,8 +483,13 @@ const modalTrigger = '.js-modal-open';
 * 原則htmlファイルに直接スタイルを書かない。外部ファイルとして管理する  
 * 各動作(処理)にはコメントを付けるが英語、または日本語を使用すること
 * JSファイルはheader.phpやfooter.phpなど共通化ファイルに記載すること（外部JavaScriptファイルの読み込みも）  
-* JSファイルは`<head>`内に記述し、`defer`属性を付与する。これによりHTMLのレンダリングをブロックせず、DOMの構築完了後に順番通りにスクリプトが実行されます。
-  例：`<script src=“./assets/plugins/anijs/ani.js” defer></script>`  
+* **JSファイルの配置と`defer`属性について**:
+  * **基本原則（推奨）**: 外部JSファイル（`src`あり）は`<head>`内に記述し、`defer`属性を付与します。これによりHTMLのレンダリングをブロックせず、DOMの構築完了後に順番通りにスクリプトが実行されます。
+    例：`<script src="./assets/plugins/anijs/ani.js" defer></script>`
+  * **`defer`を使用しない例外ケース**:
+    * HTMLのレンダリング前に即時実行させたいスクリプト（例：ダークモード時のちらつき防止、リダイレクト処理など）。 -> *`<head>`内に`defer`なしで記述します。*
+    * 分析・トラッキングツール（Google Analytics, GTM, Pixelなど）。 -> *DOMや順序に依存しないため、通常は`defer`ではなく`async`を使用します。*
+    * インラインスクリプト（`<script>`タグ内に直接記述するコード）。 -> *インラインスクリプトの使用は極力控え、本当に必要な場合にのみ使用してください。注意：`defer`で読み込んだ外部ライブラリ（jQueryなど）に依存するインライン処理を書く場合は、ライブラリの読み込み完了を待つために必ず `jQuery(function($){...})` や `DOMContentLoaded` で囲む必要があります。*
 * CDN利用を控える ※jQueryのCDNは稀に読み込みが遅くなって表示が崩れたりするケースがある。  
 * 全て、もしくはほとんどのページで使用するものはcommon.jsにまとめて記述する  
 
@@ -703,66 +708,127 @@ const newsLink = ‘.js-news-tab-btn’;
   必要に応じて下記を `functions.php` にて活用する
 
 ```php
+// 管理機能非表示用の権限チェック関数
+function is_restricted_admin_user() {
+  $user = wp_get_current_user();
+  if ( ! $user || ! $user->exists() ) {
+    return false;
+  }
+
+  // 制限対象のRole一覧（デフォルトはEditor、ここで変更・追加可能）
+  $restricted_roles = array(
+    'editor',
+  );
+
+  // Roleによる判定
+  if ( array_intersect( $restricted_roles, (array) $user->roles ) ) {
+    return true;
+  }
+  return false;
+}
+
 // サイドメニューを非表示
 function remove_menus() {
-  global $current_user;
-  get_currentuserinfo();
-  if ($current_user->user_login == 'お客様アカウントID（例：writer-test）') {
-    remove_menu_page('edit.php'); // 投稿
-    remove_menu_page('upload.php'); // メディア
-    remove_menu_page('edit.php?post_type=page'); // 固定ページ
-    remove_menu_page('edit-comments.php'); // コメント
-    remove_menu_page('themes.php'); // 外観
-    remove_menu_page('plugins.php'); // プラグイン
-    remove_submenu_page('index.php', 'update-core.php');
-    remove_menu_page('users.php'); // ユーザー
-    remove_menu_page('tools.php'); // ツール
-    remove_menu_page('options-general.php'); // 設定
-    remove_menu_page('wpcf7'); // contactform7
+  if ( is_restricted_admin_user() ) {
     remove_menu_page('ai1wm_export'); // wp migration
     remove_menu_page('cptui_main_menu'); // CPT UI
+    remove_menu_page('edit-comments.php'); // コメント
+    remove_menu_page('edit.php'); // 投稿
+    remove_menu_page('edit.php?post_type=page'); // 固定ページ
+    remove_menu_page('options-general.php'); // 設定
+    remove_menu_page('plugins.php'); // プラグイン
     remove_menu_page('siteguard'); // site Guard
+    remove_menu_page('themes.php'); // 外観
+    remove_menu_page('tools.php'); // ツール
+    remove_menu_page('upload.php'); // メディア
+    remove_menu_page('users.php'); // ユーザー
+    remove_menu_page('wpcf7'); // contactform7
+    remove_submenu_page('index.php', 'update-core.php');
   }
 }
-add_action('admin_menu', 'remove_menus');
+// プラグインで追加されたメニューも上書きできるように優先度を999に設定
+add_action('admin_menu', 'remove_menus', 999);
 
 // ダッシュボードを非表示
 function remove_dashboard_widgets() {
-  global $current_user;
-  get_currentuserinfo();
-  if ($current_user->user_login == 'お客様アカウントID') {
+  if ( is_restricted_admin_user() ) {
     remove_action('admin_notices', 'update_nag', 3);
-    remove_meta_box('dashboard_site_health', 'dashboard', 'normal'); // サイトヘルスステータス
+    remove_action('network_admin_notices', 'update_nag', 3); // 標準：ネットワーク上の更新通知も非表示（マルチサイトの場合）
     remove_meta_box('dashboard_activity', 'dashboard', 'normal'); // アクティビティ
-    remove_meta_box('dashboard_right_now', 'dashboard', 'normal'); // 概要
-    remove_meta_box('dashboard_quick_press', 'dashboard', 'side'); // クイックドラフト
     remove_meta_box('dashboard_primary', 'dashboard', 'side'); // WordPress イベントとニュース
+    remove_meta_box('dashboard_quick_press', 'dashboard', 'side'); // クイックドラフト
+    remove_meta_box('dashboard_right_now', 'dashboard', 'normal'); // 概要
+    remove_meta_box('dashboard_site_health', 'dashboard', 'normal'); // サイトヘルスステータス
   }
 }
-add_action('wp_dashboard_setup', 'remove_dashboard_widgets');
+add_action('wp_dashboard_setup', 'remove_dashboard_widgets', 999);
 
 // 管理画面上部ツールバーに更新アイコンを非表示
 function hide_adminbar_update_icon() {
-  global $current_user;
-  get_currentuserinfo();
-  if ($current_user->user_login == 'お客様アカウントID') {
+  if ( is_restricted_admin_user() ) {
     global $wp_admin_bar;
     $wp_admin_bar->remove_menu('updates');
   }
 }
-add_action('wp_before_admin_bar_render', 'hide_adminbar_update_icon');
+add_action('wp_before_admin_bar_render', 'hide_adminbar_update_icon', 999);
 
-// 更新通知非表示
+// 更新通知を非表示 (PHP 8 Safe & Standard)
 function update_message_admin_only() {
-  global $current_user;
-  get_currentuserinfo();
-  if ($current_user->user_login == 'お客様アカウントID') {
-    add_filter('pre_site_transient_update_core', '__return_zero');
-    remove_action('wp_version_check', 'wp_version_check');
+  if ( is_restricted_admin_user() ) {
+    add_filter('pre_site_transient_update_core', '__return_null'); // WP標準：zeroの代わりにnullを返す
     remove_action('admin_init', '_maybe_update_core');
+    remove_action('wp_version_check', 'wp_version_check');
   }
 }
-add_action('admin_init', 'update_message_admin_only');
+add_action('admin_init', 'update_message_admin_only', 999);
+
+// 非表示ページへのURL直アクセスをブロック
+function block_direct_access_to_hidden_pages() {
+  if ( is_restricted_admin_user() ) {
+    global $pagenow;
+
+    // アクセス禁止のデフォルトファイル一覧
+    $restricted_pages = array(
+      'edit-comments.php',
+      'options-general.php',
+      'plugins.php',
+      'themes.php',
+      'tools.php',
+      'upload.php',
+      'users.php',
+      'update-core.php'
+    );
+
+    if ( in_array( $pagenow, $restricted_pages, true ) ) {
+      wp_redirect( admin_url() );
+      exit;
+    }
+
+    // edit.phpの個別処理（投稿と固定ページのみ禁止）
+    if ( $pagenow === 'edit.php' ) {
+      $post_type = isset($_GET['post_type']) ? $_GET['post_type'] : 'post';
+      if ( $post_type === 'post' || $post_type === 'page' ) {
+        wp_redirect( admin_url() );
+        exit;
+      }
+    }
+
+    // プラグインページをブロック
+    if ( $pagenow === 'admin.php' && isset( $_GET['page'] ) ) {
+      $restricted_plugin_pages = array(
+        'ai1wm_export',
+        'cptui_main_menu',
+        'siteguard',
+        'wpcf7'
+      );
+      if ( in_array( $_GET['page'], $restricted_plugin_pages, true ) ) {
+        wp_redirect( admin_url() );
+        exit;
+      }
+    }
+  }
+}
+add_action( 'admin_init', 'block_direct_access_to_hidden_pages', 999 );
 ```
 
 ### プラグインに関して
