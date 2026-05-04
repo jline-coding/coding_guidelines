@@ -69,7 +69,7 @@
 - WordPressのコーディングは管理画面のエディター内でなく原則phpファイル内で行うこと
   - contactform7はエディター内でコーディングする
 
-[テンプレートDLはこちら](https://www.jlweb.jp/coding/assets/dl/html.zip)
+[テンプレートDLはこちら](https://github.com/jline-coding/TEMPLATE_HTML/archive/refs/heads/master.zip)
 
 
 ### 各種項目のマークアップ一覧
@@ -843,8 +843,7 @@ add_action( 'admin_init', 'block_direct_access_to_hidden_pages', 999 );
 
 #### 投稿タイプを作成する際
 
-- ［Custom Post Type UI］  
-  [https://ja.wordpress.org/plugins/custom-post-type-ui/](https://ja.wordpress.org/plugins/custom-post-type-ui/)  
+- **Advanced Custom Fields（ACF）** に組み込まれているPost Type / Taxonomy登録機能をそのまま使用してください。プラグインの導入数を減らし、一元管理が可能になります（Custom Post Type UIは不要です）。
 - phpファイルで投稿タイプを作成するでも可
 
 #### 記事・カテゴリなどの視覚的な並び替えの際
@@ -1047,8 +1046,8 @@ LCP（実測目安）：4秒以内 （※今後の運用で再調整可）
 
 ### コーディングテンプレート
 
-- [HTMLデータ（zip）](https://www.jlweb.jp/coding/assets/dl/html.zip)   
-- [WordPressデータ（zip）](https://www.jlweb.jp/coding/assets/dl/wp_theme.zip)   
+- [HTMLデータ（zip）](https://github.com/jline-coding/TEMPLATE_HTML/archive/refs/heads/master.zip)   
+- [WordPressデータ（zip）](https://github.com/jline-coding/TEMPLATE_WP/archive/refs/heads/master.zip)   
 - Wardpressのカスタマイテーマのphpファイル  
 - テンプレート内には案件によっては不要な内容もあるので臨機応変に不要なものは消してください
 
