@@ -33,8 +33,8 @@
 ### ファイル構成
 
 - 下層ページはフォルダを作成しindex.htmlを入れる。URLがスラッシュで終わるようにすること（ https://ドメイン/○○/ ）
-- assetsフォルダ内にcss images js venderをいれる
-  - venderフォルダにはスライダーなどのプラグインのjs,cssをいれる
+- assetsフォルダ内にcss images js vendorをいれる
+  - vendorフォルダにはスライダーなどのプラグインのjs,cssをいれる
 - Sassファイルはサーバーにはアップしない
 - 不要なファイルや画像はサーバー並びにローカル環境から削除する
 - WordPressの設置ディレクトリは、設置配下がWordPressの管理配下となるため、WordPressフォルダを作成しその中に入れる
