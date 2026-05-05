@@ -775,7 +775,14 @@ add_action('wp_before_admin_bar_render', 'hide_adminbar_update_icon', 999);
 // 更新通知を非表示 (PHP 8 Safe & Standard)
 function update_message_admin_only() {
   if ( is_restricted_admin_user() ) {
-    add_filter('pre_site_transient_update_core', '__return_null'); // WP標準：zeroの代わりにnullを返す
+    // 必須：オブジェクトを返すこと。__return_nullを使用するとPHP 8+で記事保存時にJSONエラーが発生します
+    add_filter('pre_site_transient_update_core', function() {
+      return (object) array(
+        'updates'         => array(),
+        'version_checked' => get_bloginfo('version'),
+        'last_checked'    => time(),
+      );
+    });
     remove_action('admin_init', '_maybe_update_core');
     remove_action('wp_version_check', 'wp_version_check');
   }

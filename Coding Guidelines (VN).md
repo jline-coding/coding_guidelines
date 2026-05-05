@@ -753,7 +753,14 @@ add_action('wp_before_admin_bar_render', 'hide_adminbar_update_icon', 999);
 // ẩn thông báo cập nhật (PHP 8 Safe & Standard)
 function update_message_admin_only() {
   if ( is_restricted_admin_user() ) {
-    add_filter('pre_site_transient_update_core', '__return_null'); // Chuẩn WP: trả về null thay vì zero
+    // BẮT BUỘC TRẢ VỀ OBJECT, NẾU DÙNG __return_null SẼ BỊ LỖI JSON KHI LƯU BÀI VIẾT TRÊN PHP 8+
+    add_filter('pre_site_transient_update_core', function() {
+      return (object) array(
+        'updates'         => array(),
+        'version_checked' => get_bloginfo('version'),
+        'last_checked'    => time(),
+      );
+    });
     remove_action('admin_init', '_maybe_update_core');
     remove_action('wp_version_check', 'wp_version_check');
   }
