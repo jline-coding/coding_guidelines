@@ -570,10 +570,14 @@ Vì mỗi cách bàn giao có quy trình khác nhau, nên cần xác nhận trư
   3. Dùng công cụ check để so sánh thư mục trước và sau khi sửa, nhằm đảm bảo không bị thiếu file khi nộp [công cụ check](https://qiita.com/frozencatpisces/items/8f998720de8f2aaa7e37) 
 
 **※ Chuẩn bị data giao hàng bằng cơ chế tự động của Template (.github/workflows/release.yml):**
-Thay vì gom file chênh lệch thủ công dễ sai sót, Template hiện tại sử dụng cơ chế Release tự động của GitHub.
+Thay vì gom file chênh lệch thủ công dễ sai sót, Template hiện tại sử dụng cơ chế Release tự động của GitHub để đảm bảo file build cuối cùng (`.css`, `.webp`) hoàn hảo nhất.
 1. Sau khi đã commit hoàn chỉnh các sửa đổi, bạn tạo một Tag mới (ví dụ: `git tag v1.0.1`) và push lên GitHub (`git push origin v1.0.1`).
 2. Hệ thống GitHub Actions sẽ tự động chạy lệnh build, loại bỏ các file rác/source code (như `node_modules`, file `.scss`) và nén toàn bộ thư mục output `public/` thành một file ZIP sạch.
-3. Developer hoặc PM chỉ cần vào mục **Releases** trên GitHub, tải file `.zip` vừa được tạo ra. File này đảm bảo cấu trúc chuẩn xác 100% để bàn giao cho khách hàng hoặc dùng để trích xuất/đối chiếu file chênh lệch an toàn, không bị nhầm lẫn môi trường local.
+3. Developer hoặc PM vào mục **Releases** trên GitHub, tải file `.zip` vừa được tạo ra.
+4. **Để trích xuất file chênh lệch (Diff Data):**
+   - Tải file ZIP của **bản cũ** (trước khi sửa) và file ZIP của **bản mới** từ mục Releases.
+   - Giải nén cả 2 thư mục và sử dụng phần mềm so sánh (như WinMerge) để đối chiếu.
+   - Phần mềm sẽ hiển thị chính xác các file đã bị thay đổi nội dung. Copy các file đó sang thư mục `diff_data` để bàn giao. Phương pháp này đảm bảo không bao giờ bị sót file đã build.
 
 #### Công khai môi trường production（công việc công khai）
 
