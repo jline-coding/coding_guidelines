@@ -214,10 +214,11 @@ Chỉ sử dụng SVG cho các thành phần được tạo dưới dạng vecto
 ※Văn bản bên trong SVG bắt buộc phải được convert sang outline, để tránh phụ thuộc vào font
 
 #### Về xuất file WebP
-Việc chuyển đổi hình ảnh sang WebP được khuyến nghị tự động hóa bằng {{công cụ xuất file}}
-{{Cách xuất file cụ thể}}
-{{Thiết lập chất lượng khi xuất file}}
-→ Phần này do team Vietnam đề xuất
+Việc chuyển đổi hình ảnh sang WebP đã được tích hợp sẵn và tự động hóa trong Template thông qua build script sử dụng thư viện `sharp`.
+- **Định dạng tự động chuyển đổi:** Các file có đuôi `.jpg`, `.jpeg`, `.png` khi được đặt vào thư mục ảnh (assets/images) sẽ được tự động convert sang `.webp` với chất lượng (quality) tối ưu ở mức 90%.
+- **Định dạng giữ nguyên:** Các định dạng như `.gif`, `.svg`, `.ico`, `.webp` sẽ không bị convert mà được copy trực tiếp sang thư mục build.
+- **Tối ưu hiệu suất:** Script sử dụng logic kiểm tra timestamp (`isNewer`) để chỉ xử lý các file thêm mới hoặc bị thay đổi, đồng thời tự động dọn dẹp các file rác (`removeStaleFiles`) ở thư mục đích. Việc này giúp quá trình build nhanh chóng và sạch sẽ.
+- **Cách sử dụng:** Bạn chỉ cần sử dụng các lệnh build có sẵn của template, script sẽ tự động thực thi.
 
 #### Về fallback cho WebP
 Trong trường hợp có yêu cầu hỗ trợ môi trường không tương thích WebP, hãy sử dụng thẻ`<picture>`  và thiết lập thứ tự fallback WebP → jpg/png
@@ -465,7 +466,11 @@ const modalTrigger = '.js-modal-open';
 * Quy tắc sử dụng Sass phải tuân theo “Sass Manual”
 [Manual tại đây](https://docs.google.com/spreadsheets/d/1lPs7MtXUkwyGbCdF9wSgbP_I9lzZczuvFK6cSkhvAA4/edit#gid=0)
 
-※Do team Vietnam đề xuất Muốn cập nhật lại
+**※ Cập nhật quy tắc cấu trúc SCSS áp dụng cho Template:**
+- Template hiện tại đang sử dụng cấu trúc Dart Sass module (FLOCSS / 7-1 pattern) chia theo các thư mục: `foundation` (reset, base), `layout` (header, footer), `component` (các UI component), `page` (style riêng cho từng trang), `global` (biến, mixins), và `utilities`.
+- **Tuyệt đối không dùng `@import`.** Thay vào đó, sử dụng `@use` và `@forward`. 
+- Thư mục `global` chứa các file định nghĩa biến màu sắc (`_color.scss`), font (`_font.scss`), mixin (`_mixin.scss`), v.v... được gom lại qua file `_index.scss` bằng lệnh `@forward`. Để sử dụng các biến/mixin này, gọi `@use "../global" as *;` (hoặc đường dẫn tương đối phù hợp) ở đầu mỗi file SCSS. Việc cấu hình các biến dùng chung bắt buộc phải thực hiện trong thư mục `global` này.
+- Các file cấp cao (như `common.scss` hay `top.scss`) chỉ làm nhiệm vụ nạp các module qua `@use` để compile ra CSS sạch, không viết CSS trực tiếp vào các file này.
 
 
 ## Về JavaScript
@@ -560,7 +565,12 @@ Vì mỗi cách bàn giao có quy trình khác nhau, nên cần xác nhận trư
   1. Backup data trước khi sửa
   2. Vì có thể có sự chênh lệch thời gian trước khi nộp, nên phải ghi rõ file nào đã sửa, bao gồm cả thư mục img và file css 
   3. Dùng công cụ check để so sánh thư mục trước và sau khi sửa, nhằm đảm bảo không bị thiếu file khi nộp [công cụ check](https://qiita.com/frozencatpisces/items/8f998720de8f2aaa7e37) 
-※Ghi chú của Shimada san：Về cách chuẩn bị data chênh lệch, hãy thay đổi theo phương pháp do team Việt Nam đề xuất
+
+**※ Chuẩn bị data giao hàng bằng cơ chế tự động của Template (.github/workflows/release.yml):**
+Thay vì gom file chênh lệch thủ công dễ sai sót, Template hiện tại sử dụng cơ chế Release tự động của GitHub.
+1. Sau khi đã commit hoàn chỉnh các sửa đổi, bạn tạo một Tag mới (ví dụ: `git tag v1.0.1`) và push lên GitHub (`git push origin v1.0.1`).
+2. Hệ thống GitHub Actions sẽ tự động chạy lệnh build, loại bỏ các file rác/source code (như `node_modules`, file `.scss`) và nén toàn bộ thư mục output `public/` thành một file ZIP sạch.
+3. Developer hoặc PM chỉ cần vào mục **Releases** trên GitHub, tải file `.zip` vừa được tạo ra. File này đảm bảo cấu trúc chuẩn xác 100% để bàn giao cho khách hàng hoặc dùng để trích xuất/đối chiếu file chênh lệch an toàn, không bị nhầm lẫn môi trường local.
 
 #### Công khai môi trường production（công việc công khai）
 
