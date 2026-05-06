@@ -1065,7 +1065,7 @@ LCP（実測目安）：4秒以内 （※今後の運用で再調整可）
 
 - [HTMLデータ（zip）](https://github.com/jline-coding/TEMPLATE_HTML/archive/refs/heads/master.zip)   
 - [WordPressデータ（zip）](https://github.com/jline-coding/TEMPLATE_WP/archive/refs/heads/master.zip)   
-- Wardpressのカスタマイテーマのphpファイル  
+- WordPressのカスタマイズテーマのphpファイル  
 - テンプレート内には案件によっては不要な内容もあるので臨機応変に不要なものは消してください
 
 ### ダミーファイル類
