@@ -570,14 +570,17 @@ Vì mỗi cách bàn giao có quy trình khác nhau, nên cần xác nhận trư
   3. Dùng công cụ check để so sánh thư mục trước và sau khi sửa, nhằm đảm bảo không bị thiếu file khi nộp [công cụ check](https://qiita.com/frozencatpisces/items/8f998720de8f2aaa7e37) 
 
 **※ Chuẩn bị data giao hàng bằng cơ chế tự động của Template (.github/workflows/release.yml):**
-Thay vì gom file chênh lệch thủ công dễ sai sót, Template hiện tại sử dụng cơ chế Release tự động của GitHub để đảm bảo file build cuối cùng (`.css`, `.webp`) hoàn hảo nhất.
+Thay vì gom file chênh lệch thủ công dễ sai sót hay phải dùng phần mềm WinMerge để so sánh, Template hiện tại đã được nâng cấp với **cơ chế tự động trích xuất file chênh lệch (Auto Diff Extraction)**.
+
 1. Sau khi đã commit hoàn chỉnh các sửa đổi, bạn tạo một Tag mới (ví dụ: `git tag v1.0.1`) và push lên GitHub (`git push origin v1.0.1`).
-2. Hệ thống GitHub Actions sẽ tự động chạy lệnh build, loại bỏ các file rác/source code (như `node_modules`, file `.scss`) và nén toàn bộ thư mục output `public/` thành một file ZIP sạch.
-3. Developer hoặc PM vào mục **Releases** trên GitHub, tải file `.zip` vừa được tạo ra.
-4. **Để trích xuất file chênh lệch (Diff Data):**
-   - Tải file ZIP của **bản cũ** (trước khi sửa) và file ZIP của **bản mới** từ mục Releases.
-   - Giải nén cả 2 thư mục và sử dụng phần mềm so sánh (như WinMerge) để đối chiếu.
-   - Phần mềm sẽ hiển thị chính xác các file đã bị thay đổi nội dung. Copy các file đó sang thư mục `diff_data` để bàn giao. Phương pháp này đảm bảo không bao giờ bị sót file đã build.
+2. Hệ thống GitHub Actions sẽ tự động chạy lệnh build, loại bỏ các file rác/source code (như `node_modules`, file `.scss`).
+3. **Tự động đối chiếu:** Hệ thống sẽ dùng lệnh `rsync` tự động tải bản Release cũ về, đối chiếu với bản mới để nhặt ra chính xác các file bị thay đổi và tự động đóng gói.
+4. Developer hoặc PM chỉ cần vào mục **Releases** trên GitHub, tải 2 file `.zip` vừa được tạo ra để gửi ngay cho khách hàng:
+   - 📦 **Bản đầy đủ:** `{tên_dự_án}_{tag_name}.zip` (Chứa toàn bộ data sạch)
+   - 📦 **Bản chênh lệch:** `{tên_dự_án}_diff_data_{tag_name}.zip` (Chỉ chứa các file bị thay đổi/thêm mới, dùng để giao diff data mà không lo thiếu sót)
+
+> ⚠️ **LƯU Ý QUAN TRỌNG KHI NHẬN DATA TỪ KHÁCH HÀNG:**
+> Để GitHub Actions có thể so sánh và trích xuất file chênh lệch, nó cần một mốc gốc (baseline). Do đó, ngay khi nhận source code cũ từ khách hàng và push lên Git lần đầu tiên, bạn **BẮT BUỘC PHẢI TẠO TAG (VD: `v1.0.0`) VÀ PUSH LÊN GITHUB TRƯỚC KHI CHỈNH SỬA CODE**. Nếu bạn sửa code rồi mới tạo Tag đầu tiên, hệ thống sẽ không có bản cũ để đối chiếu và không thể tạo file Diff.
 
 #### Công khai môi trường production（công việc công khai）
 
