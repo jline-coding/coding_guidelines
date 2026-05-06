@@ -369,21 +369,21 @@ Ghi class theo thứ tự: FLOCSS class trước, utility class sau
 
 - Tên class không đặt theo hình thức bên ngoài (màu sắc, độ đậm…), mà phải đặt dựa trên mục đích, vai trò và ý nghĩa
 - Tên class phải dễ đoán và dễ hiểu, để developer khác khi nhìn vào có thể hiểu ngay
-- Cho phép lồng Element nhưng **tối đa không quá 3 cấp** (ví dụ: `Block__Element__Element`). Nếu DOM lồng sâu hơn 3 cấp, hãy tách thành Block mới.
+- **Tuyệt đối không lồng Element vào Element** (không sử dụng `Block__Element__Element`). Một Element chỉ được phép trực thuộc Block gốc để giữ cấu trúc phẳng và linh hoạt. Nếu DOM quá phức tạp, hãy tách thành Block mới.
 
 ###### Quy tắc nest — ví dụ chi tiết
 
-**① Tên class: Lồng tối đa 3 cấp**
+**① Tên class: Cấu trúc phẳng, không lồng Element**
 
 ```css
-/* ❌ SAI: lồng quá 3 cấp (4 cấp trở lên) */
-.p-news__list__item__title {}
-.c-card__body__text__link {}
-
-/* ✅ ĐÚNG: lồng tối đa 3 cấp */
-.p-news__list {}
-.p-news__list__item {}
+/* ❌ SAI: Lồng Element vào Element (vi phạm chuẩn BEM) */
+.p-news__list__item {} 
 .p-news__item__title {}
+
+/* ✅ ĐÚNG: Mọi Element chỉ trực thuộc Block gốc */
+.p-news__list {}
+.p-news__item {} /* Trực thuộc p-news, không quan tâm nó nằm trong list hay không */
+.p-news__title {}
 ```
 
 **② Khi DOM lồng quá sâu: tách thành Block mới**
@@ -518,16 +518,18 @@ jQuery(function($) {
   - Viết code mới hoàn toàn tách biệt, không phụ thuộc vào jQuery
 ### Quy tắc const let
 
-* Vì const là hằng số nên khi chỉ định DOM selector hoặc giá trị cố định dùng const, biến có thể thay đổi dùng let
-* Khi gán DOM vào biến, nên lưu class name thay vì lưu trực tiếp jQuery object, để dễ tái sử dụng và linh hoạt hơn
+* Vì const là hằng số nên khi gán đối tượng DOM hoặc giá trị cố định thì dùng `const`, với biến có thể thay đổi giá trị thì dùng `let`.
+* **Bắt buộc Cache DOM:** Khi cần sử dụng một phần tử DOM nhiều lần, hãy tìm kiếm và lưu trữ đối tượng jQuery (jQuery object) vào biến ngay từ đầu để tối ưu hiệu suất (tránh việc trình duyệt phải quét lại toàn bộ cây HTML). Thêm tiền tố `$` vào trước tên biến để nhận diện biến đó chứa đối tượng jQuery.
   
 ```js
-// （ví dụ）
-let newsLink = $(‘.js-news-tab-btn’);
+/* ❌ SAI: Tìm lại DOM mỗi lần sử dụng (Gây giảm hiệu suất) */
+$('.js-news-tab-btn').addClass('is-active');
+$('.js-news-tab-btn').show();
 
-// ↓ viết lại
-
-const newsLink = ‘.js-news-tab-btn’;
+/* ✅ ĐÚNG: Cache DOM vào biến (Tối ưu hiệu suất) */
+const $newsLink = $('.js-news-tab-btn'); // Thêm $ để nhận diện jQuery object
+$newsLink.addClass('is-active');
+$newsLink.show();
 ```
 
 ### Về tốc độ animation

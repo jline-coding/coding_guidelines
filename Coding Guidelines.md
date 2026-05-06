@@ -373,21 +373,21 @@ FLOCSSクラスを先に、Utilityクラスを後に記述します。
 
 - クラス名は見た目（色・太さ）ではなく、目的・役割・意味に基づいて命名します。
 - 予測しやすく、他の開発者が見ても理解できる名称を設定します。
-- Elementのネストは**最大3階層まで**（例：`Block__Element__Element`）。それ以上深くなる場合は新しいBlockとして分離します。
+- **Elementのネスト（入れ子）は絶対に行わないでください**（`Block__Element__Element`は使用不可）。フラットで柔軟な構造を保つため、Elementは常に元のBlockにのみ属するようにします。DOMが複雑になる場合は、新しいBlockとして分離してください。
 
 ###### ネスト規則 — 詳細例
 
-**① クラス名：最大3階層まで**
+**① クラス名：フラットな構造を保つ（Elementのネスト禁止）**
 
 ```css
-/* ❌ NG：4階層以上のネスト */
-.p-news__list__item__title {}
-.c-card__body__text__link {}
-
-/* ✅ OK：最大3階層まで */
-.p-news__list {}
-.p-news__list__item {}
+/* ❌ NG：Elementの中にElementをネストしている（BEMのルール違反） */
+.p-news__list__item {} 
 .p-news__item__title {}
+
+/* ✅ OK：すべてのElementは元のBlockに直接属する */
+.p-news__list {}
+.p-news__item {} /* リストの中にあるかどうかに関わらず、p-newsに属する */
+.p-news__title {}
 ```
 
 **② DOMが深すぎる場合：新しいBlockに分離**
@@ -522,18 +522,20 @@ jQuery(function($) {
   - パフォーマンスの最適化（重いスクロール処理やアニメーションなど）
   - jQueryが十分にサポートしていない新しいAPIを使用する場合
   - jQueryに依存しない独立した新規コードを書く場合
-### const let の記述ルール
+### const / let の記述ルール
 
-* Constは定数なのでDOMの指定と定数、変数はletを使います  
-* DOMを変数に入れる場合はjQueryオブジェクトではなく、クラス名などの方が応用しやすいです  
+* 定数やDOMオブジェクトの割り当てには `const` を使用し、値が変更される変数には `let` を使用します。
+* **DOMのキャッシュ:** 同じDOM要素を複数回操作する場合は、パフォーマンス最適化のため（ブラウザがHTML全体を再検索するのを防ぐため）、最初に検索したjQueryオブジェクトを変数に格納（キャッシュ）してください。jQueryオブジェクトを格納する変数名の先頭には、識別しやすいよう `$` を付けます。
 
 ```js
-// （例）
-let newsLink = $(‘.js-news-tab-btn’);
+/* ❌ NG：使用するたびにDOMを再検索している（パフォーマンスの低下） */
+$('.js-news-tab-btn').addClass('is-active');
+$('.js-news-tab-btn').show();
 
-// ↓ 書き換える
-
-const newsLink = ‘.js-news-tab-btn’;
+/* ✅ OK：DOMを変数にキャッシュする（パフォーマンスの最適化） */
+const $newsLink = $('.js-news-tab-btn'); // jQueryオブジェクトであることが分かるよう$を付ける
+$newsLink.addClass('is-active');
+$newsLink.show();
 ```
 
 ### アニメーションスピードについて
