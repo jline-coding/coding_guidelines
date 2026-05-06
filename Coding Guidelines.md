@@ -393,12 +393,12 @@ FLOCSSクラスを先に、Utilityクラスを後に記述します。
 **② DOMが深すぎる場合：新しいBlockに分離**
 
 ```html
-<!-- ❌ NG：3階層を超えてネストしている -->
+<!-- ❌ NG：Elementの中にElementをネストしている（BEMのルール違反） -->
 <div class="p-news">
    <ul class="p-news__list">
       <li class="p-news__list__item">
          <div class="p-news__list__item__meta">
-            <span class="p-news__list__item__meta__date"></span>  <!-- 深すぎ -->
+            <span class="p-news__list__item__meta__date"></span>  <!-- 完全にNG -->
          </div>
       </li>
    </ul>
@@ -406,10 +406,10 @@ FLOCSSクラスを先に、Utilityクラスを後に記述します。
 ```
 
 ```html
-<!-- ✅ OK：DOMが複雑な場合は新しいBlockとして分離 -->
+<!-- ✅ OK：新しいBlock（.c-meta）として分離し、フラットな構造（.p-news__item）を維持する -->
 <div class="p-news">
    <ul class="p-news__list">
-      <li class="p-news__list__item">
+      <li class="p-news__item">
          <div class="c-meta">                     <!-- 新しいBlock -->
             <span class="c-meta__date"></span>     <!-- 新しいBlockのElement -->
          </div>

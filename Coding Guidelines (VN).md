@@ -389,12 +389,12 @@ Ghi class theo thứ tự: FLOCSS class trước, utility class sau
 **② Khi DOM lồng quá sâu: tách thành Block mới**
 
 ```html
-<!-- ❌ SAI: lồng quá 3 cấp -->
+<!-- ❌ SAI: Lồng Element vào Element (Sai quy tắc BEM) -->
 <div class="p-news">
    <ul class="p-news__list">
       <li class="p-news__list__item">
          <div class="p-news__list__item__meta">
-            <span class="p-news__list__item__meta__date"></span>  <!-- Quá 3 cấp -->
+            <span class="p-news__list__item__meta__date"></span>  <!-- Sai hoàn toàn -->
          </div>
       </li>
    </ul>
@@ -402,11 +402,11 @@ Ghi class theo thứ tự: FLOCSS class trước, utility class sau
 ```
 
 ```html
-<!-- ✅ ĐÚNG: tách thành Block mới khi DOM phức tạp -->
+<!-- ✅ ĐÚNG: Tách thành Block mới (.c-meta) và giữ Element phẳng (.p-news__item) -->
 <div class="p-news">
    <ul class="p-news__list">
-      <li class="p-news__list__item">
-         <div class="c-meta">                     <!-- Block mới -->
+      <li class="p-news__item">
+         <div class="c-meta">                     <!-- Đã tách thành Block mới -->
             <span class="c-meta__date"></span>     <!-- Element của Block mới -->
          </div>
       </li>
