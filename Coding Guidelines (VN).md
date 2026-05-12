@@ -266,13 +266,15 @@ TEMPLATE_WP/
 
 #### Về thẻ `<button>`
 
-- Chỉ sử dụng cho nút gửi form chẳng hạn
-- Không sử dụng cho nút back to top và nút entry
+- Sử dụng cho các phần tử tương tác bằng JavaScript (mở modal, chuyển tab, v.v.) và nút submit form.
+- Tiêu chí đánh giá: Hoạt động dựa trên sự kiện click mà **không làm thay đổi URL**.
 
-#### về tag  `<a>`
+#### Về thẻ `<a>`
 
-- Vùng có thể click của thẻ a phải bao phủ toàn bộ khu vực của nút
-- Về cách ghi path, nguyên tắc là sử dụng relative path
+- Sử dụng cho các trường hợp chuyển trang (tất cả những gì làm **thay đổi URL** đều dùng `<a>`).
+- Bắt buộc dùng `<a>` cho các nút như "Back to top" (cuộn lên đầu trang) hoặc nút "Entry" (chuyển sang trang đăng ký/form), không sử dụng `<button>`.
+- Vùng có thể click của thẻ a phải bao phủ toàn bộ khu vực của nút.
+- Về cách ghi path, nguyên tắc là sử dụng relative path.
 - Khi liên kết ra bên ngoài và sử dụng target="_blank", cần ghi kèm rel="noopener noreferrer"
   `<a href="URL" target="_blank" rel="noopener noreferrer"> URL </a>`
 
