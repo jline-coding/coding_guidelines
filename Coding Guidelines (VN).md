@@ -585,7 +585,7 @@ const modalTrigger = '.js-modal-open';
 ### Về Sass
 
 * Quy tắc sử dụng Sass phải tuân theo “Sass Manual”
-[Manual tại đây](https://docs.google.com/spreadsheets/d/1lPs7MtXUkwyGbCdF9wSgbP_I9lzZczuvFK6cSkhvAA4/edit#gid=0)
+
 
 **※ Cập nhật quy tắc cấu trúc SCSS áp dụng cho Template:**
 - Template hiện tại đang sử dụng cấu trúc Dart Sass module (FLOCSS / 7-1 pattern) chia theo các thư mục: `foundation` (reset, base), `layout` (header, footer), `component` (các UI component), `page` (style riêng cho từng trang), `global` (biến, mixins), và `utilities`.
@@ -747,7 +747,7 @@ Thay vì gom file chênh lệch thủ công dễ sai sót hay phải dùng phầ
 
 ### Liquid Pattern
 ・Ngoài các đặc điểm của Basic Pattern, kích thước chữ cũng thay đổi tương đối theo chiều rộng nội dung
-　site tham khảo : https://pict-adloop.com/　https://www.ohshima-showten.com/
+　site tham khảo : <https://pict-adloop.com/> , <https://www.ohshima-showten.com/>
 
 
 ### Chiều rộng nội dung và breakpoint
@@ -800,7 +800,7 @@ Thay vì gom file chênh lệch thủ công dễ sai sót hay phải dùng phầ
 ### Về phương pháp xây dựng
 
 - Tạo một thư mục như「wp2026」, sau đó cài đặt WordPress vào trong thư mục đó 
-- [Cấu trúc thư mục](https://github.com/jline-coding/TEMPLATE_WP/tree/master/src)参照
+
 - Trừ khi có chỉ định, không sử dụng template có sẵn mà tạo theme gốc (original theme) và xây dựng bằng file php
 - Tên theme thì phải sử dụng tên dự án
 - Không viết code vào trong editor của trang quản trị WordPress mà phải viết code vào file php

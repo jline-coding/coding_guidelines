@@ -589,7 +589,7 @@ const modalTrigger = '.js-modal-open';
 ### Sassについて
 
 * Sassの規則は「Sassマニュアル」に沿ってコーディングする  
-[マニュアルはこちら](https://docs.google.com/spreadsheets/d/1lPs7MtXUkwyGbCdF9wSgbP_I9lzZczuvFK6cSkhvAA4/edit#gid=0)
+
 
 **※ テンプレートに適用されるSCSS構造ルール:**
 - 現在のテンプレートはDart Sassのモジュール構造（FLOCSS / 7-1パターン）を採用しており、`foundation`（リセット、ベース）、`layout`（ヘッダー、フッター）、`component`（UIコンポーネント）、`page`（ページ個別のスタイル）、`global`（変数、mixin）、`utilities` のディレクトリに分割されています。
@@ -763,7 +763,7 @@ $newsLink.show();
 
 ### リキッドパターン
 ・基本パターンに加え、文字サイズもコンテンツ幅に対して相対的に可変
-　参考サイト：https://pict-adloop.com/　https://www.ohshima-showten.com/
+　参考サイト：<https://pict-adloop.com/> , <https://www.ohshima-showten.com/>
 
 
 ### コンテンツ幅とブレイクポイント
@@ -822,7 +822,7 @@ $newsLink.show();
 ### 構築方法に関して
 
 - 「wp2026」などフォルダを作成し、その中にWordpressを設置する
-- [フォルダ構成](https://github.com/jline-coding/TEMPLATE_WP/tree/master/src)参照
+
 - 指定がない限りは配布テンプレートは使用せずにオリジナルテーマを作成し、phpファイルで構築する
 - テーマ名は案件名を使用すること
 - WP管理画面のエディタにコードは記入せず、phpファイルにコードを記述すること
