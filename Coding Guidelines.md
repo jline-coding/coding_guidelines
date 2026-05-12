@@ -32,7 +32,7 @@
 
 ### ファイル構成
 
-- 下層ページはフォルダを作成しindex.htmlを入れる。URLがスラッシュで終わるようにすること（ https://ドメイン/○○/ ）
+- 下層ページはフォルダを作成しindex.html(index.ejs)を入れる。URLがスラッシュで終わるようにすること（ https://github.com/jline-coding/TEMPLATE_HTML/tree/master/src/pages ）
 - assetsフォルダ内にcss images js vendorをいれる
   - vendorフォルダにはスライダーなどのプラグインのjs,cssをいれる
 - Sassファイルはサーバーにはアップしない
@@ -40,7 +40,7 @@
 - WordPressの設置ディレクトリは、設置配下がWordPressの管理配下となるため、WordPressフォルダを作成しその中に入れる
   - 管理性を考慮してルート直下に index.php、.htaccess を設置し、WordPress本体は「wp-bridge2025」フォルダに格納すること。
 
-[フォルダ構成例はこちら](https://docs.google.com/spreadsheets/d/1lPs7MtXUkwyGbCdF9wSgbP_I9lzZczuvFK6cSkhvAA4/edit#gid=261860441)
+[フォルダ構成例はこちら](https://github.com/jline-coding/TEMPLATE_WP/tree/master/src)
 
 
 ### フォーマット規則
@@ -69,7 +69,8 @@
 - WordPressのコーディングは管理画面のエディター内でなく原則phpファイル内で行うこと
   - contactform7はエディター内でコーディングする
 
-[テンプレートDLはこちら](https://github.com/jline-coding/TEMPLATE_HTML/archive/refs/heads/master.zip)
+[テンプレートHTML DLはこちら](https://github.com/jline-coding/TEMPLATE_HTML/archive/refs/heads/master.zip)  
+[テンプレートWP DLはこちら](https://github.com/jline-coding/TEMPLATE_WP/archive/refs/heads/master.zip)
 
 
 ### 各種項目のマークアップ一覧
@@ -702,7 +703,7 @@ $newsLink.show();
 ### 構築方法に関して
 
 - 「wp2026」などフォルダを作成し、その中にWordpressを設置する
-- [フォルダ構成](https://docs.google.com/spreadsheets/d/1lPs7MtXUkwyGbCdF9wSgbP_I9lzZczuvFK6cSkhvAA4/edit#gid=261860441)参照
+- [フォルダ構成](https://github.com/jline-coding/TEMPLATE_WP/tree/master/src)参照
 - 指定がない限りは配布テンプレートは使用せずにオリジナルテーマを作成し、phpファイルで構築する
 - テーマ名は案件名を使用すること
 - WP管理画面のエディタにコードは記入せず、phpファイルにコードを記述すること
