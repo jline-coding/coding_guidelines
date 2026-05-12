@@ -247,7 +247,8 @@ TEMPLATE_WP/
     /* OK */
     .c-global-nav{}
     ```
-- Giảm thiểu việc sử dụng các descendant selector không cần thiết
+- Về nguyên tắc, nghiêm cấm việc sử dụng descendant selector (selector con cháu) để chỉ định style, ví dụ như `.p-news .c-button {}`.
+  - ※Ngoại lệ: Có thể sử dụng đối với nội dung bài viết trong WordPress hoặc các trường hợp kèm theo thay đổi trạng thái như `.is-active`.
 - Tất cả các property phải kết thúc bằng dấu chấm phẩy ;
 - Mỗi selector và property phải được viết trên dòng riêng
 - Khi giá trị là 0, bỏ đơn vị
