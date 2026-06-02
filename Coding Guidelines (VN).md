@@ -301,9 +301,25 @@ TEMPLATE_WP/
 - Sử dụng cho các trường hợp chuyển trang (tất cả những gì làm **thay đổi URL** đều dùng `<a>`).
 - Bắt buộc dùng `<a>` cho các nút như "Back to top" (cuộn lên đầu trang) hoặc nút "Entry" (chuyển sang trang đăng ký/form), không sử dụng `<button>`.
 - Vùng có thể click của thẻ a phải bao phủ toàn bộ khu vực của nút.
-- Về cách ghi path, nguyên tắc là sử dụng relative path.
-- Khi liên kết ra bên ngoài và sử dụng target="_blank", cần ghi kèm rel="noopener noreferrer"
-  `<a href="URL" target="_blank" rel="noopener noreferrer"> URL </a>`
+- **Quy tắc thiết lập thuộc tính `href` đúng cách và đầy đủ nhất:**
+  - **Liên kết nội bộ (Internal link):**
+    - Sử dụng đường dẫn tương đối từ root (Root-relative path, bắt đầu bằng `/`) để đảm bảo liên kết hoạt động chính xác ở cả trang chủ lẫn các trang con (ví dụ: `href="/about/"` thay vì `href="about/"` hoặc `href="about.html"`).
+    - Phải có dấu gạch chéo cuối trang (Trailing Slash) ở cuối URL thư mục (ví dụ: `href="/contact/"` thay vì `href="/contact"`), giúp tránh việc trình duyệt phải redirect 301 không cần thiết, làm giảm hiệu suất tải trang và ảnh hưởng đến SEO.
+    - Tuyệt đối không viết cứng tên miền (domain) của môi trường local hoặc staging vào link (ví dụ: cấm dùng `href="https://test-server.com/about/"`).
+  - **Liên kết ngoài (External link):**
+    - Phải viết đầy đủ giao thức `https://` hoặc `http://` (ví dụ: `href="https://google.com"`).
+    - Bắt buộc phải có thuộc tính `target="_blank"` kèm theo `rel="noopener noreferrer"` để đảm bảo bảo mật thông tin và hiệu suất của trang web.
+  - **Liên kết gọi điện thoại và gửi email (Tel & Mailto):**
+    - Gọi điện: Sử dụng định dạng `href="tel:số-điện-thoại"` không chứa khoảng trắng hay ký tự đặc biệt như dấu gạch ngang (ví dụ: `href="tel:0312345678"`, kể cả khi phần text hiển thị là `03-1234-5678`).
+    - Gửi email: Sử dụng định dạng `href="mailto:địa-chỉ-email"` (ví dụ: `href="mailto:info@example.com"`).
+  - **Liên kết neo trong trang (Anchor link):**
+    - Cùng một trang: Sử dụng `href="#id-neo"` (ví dụ: `href="#contact"`).
+    - Từ trang khác trỏ đến một section của trang chủ: Sử dụng `href="/#id-neo"` (ví dụ: `href="/#contact"` hoặc `href="../#contact"` tuỳ cấu trúc).
+  - **Trong môi trường phát triển WordPress:**
+    - Không viết cứng URL tĩnh, bắt buộc sử dụng các hàm PHP động của WordPress để sinh liên kết:
+      - Link trang chủ: `<?php echo esc_url( home_url( '/' ) ); ?>`
+      - Link trang con / Bài viết động (theo ID hoặc Object): `<?php echo esc_url( get_permalink( $page_id ) ); ?>`
+      - Link đến file tĩnh trong thư mục theme (ảnh, css, js): `<?php echo esc_url( get_theme_file_uri( '/assets/images/logo.svg' ) ); ?>`
 
 
 ### Về Interaction
@@ -830,6 +846,16 @@ Thay vì gom file chênh lệch thủ công dễ sai sót hay phải dùng phầ
 
 - Tạo một thư mục như「wp2026」, sau đó cài đặt WordPress vào trong thư mục đó 
 
+- Đối với developer thực hiện chính dự án, vui lòng tạo 2 tài khoản quản lý admin:
+  - **Tài khoản master (Tài khoản chính):** Tạo khi setup WordPress.
+    - Định dạng tên đăng nhập ví dụ: `master-[tên-task]` (ví dụ: `master-lp-renewal`).
+    - Thiết lập ngôn ngữ mặc định là **tiếng Nhật**.
+    - Sử dụng địa chỉ email của công ty: `kensyo@j-line.co.jp`.
+  - **Tài khoản dev (Dành cho team Việt Nam làm việc):**
+    - Định dạng tên đăng nhập ví dụ: `dev-[tên-task]` (ví dụ: `dev-lp-renewal`).
+    - Sử dụng địa chỉ email cá nhân do công ty cấp để tạo.
+    - Ngôn ngữ có thể set theo ngôn ngữ mà lập trình viên cảm thấy thuận tiện làm việc nhất.
+
 - Trừ khi có chỉ định, không sử dụng template có sẵn mà tạo theme gốc (original theme) và xây dựng bằng file php
 - Tên theme thì phải sử dụng tên dự án
 - Không viết code vào trong editor của trang quản trị WordPress mà phải viết code vào file php
@@ -982,6 +1008,26 @@ function block_direct_access_to_hidden_pages() {
   }
 }
 add_action( 'admin_init', 'block_direct_access_to_hidden_pages', 999 );
+```
+
+- **Mặc định bỏ chọn checkbox gửi email thông báo cho user mới:**
+  Khi tạo mới một tài khoản user trong trang quản trị (trang `user-new.php`), mặc định checkbox "Gửi email thông báo cho người dùng mới" (`send_user_notification`) sẽ được bật. Để tránh việc WordPress tự động gửi email không mong muốn trong quá trình phát triển hoặc chuyển giao (migration), sử dụng hook dưới đây để tự động bỏ chọn (uncheck) checkbox này bằng JavaScript được chèn ở footer trang:
+
+```php
+// Mặc định bỏ chọn checkbox gửi email thông báo cho user mới
+add_action( 'admin_footer-user-new.php', function() {
+	?>
+	<script>
+	( function() {
+		const checkbox = document.getElementById( 'send_user_notification' );
+
+		if ( checkbox ) {
+			checkbox.checked = false;
+		}
+	}() );
+	</script>
+	<?php
+} );
 ```
 
 ### Về plugin
