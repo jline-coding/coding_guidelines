@@ -1077,6 +1077,19 @@ add_action( 'admin_footer-user-new.php', function() {
 - ［Contact Form 7］  
   [https://ja.wordpress.org/plugins/contact-form-7/](https://ja.wordpress.org/plugins/contact-form-7/)  
 - [詳しくはこちら](https://www.jlweb.jp/coding/basic/form/)
+- **［Contact Form 7 Auto Generator (import_form_cf7.php)］**
+  - **目的:** 静的なHTMLフォームをContact Form 7の標準ショートコードに自動変換し、メールテンプレートも自動生成します。
+  - **使用方法:**
+    1. テーマ内で `import_form_cf7.php` が読み込まれていることを確認します。
+    2. HTMLテンプレートファイル内で、各項目の見出しタグに `wpf-title` クラスを付与し、利用規約等の同意チェックボックスの親要素に `wpf-acceptance` クラスを付与します。
+    3. WordPressの管理画面から **お問い合わせ (Contact)** 画面を開きます。
+    4. 画面右上の **表示オプション (Screen Options)** を開き、「**Template Importer Tool**」にチェックを入れます。
+    5. フォーム一覧の下にあるツールパネルで、以下の項目を入力・選択します:
+       - **Form Name**: 作成するフォームの名前。
+       - **Template File**: 変換するHTMLフォームを含むテンプレートファイル。
+       - **Form Class Selector**: 変換対象となるフォームエリアのクラス名またはID。
+       その後、「**Generate Form**」ボタンをクリックします。
+    6. フォームとメールテンプレートが自動生成されます。生成されたショートコードをコピーし、テンプレートファイルに貼り付けて完了です。
 
 #### データの移行をする際
 

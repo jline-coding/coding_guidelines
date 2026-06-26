@@ -1055,6 +1055,19 @@ Tại J-line chúng tôi khuyến nghị sử dụng những plugin dưới đâ
 - ［Contact Form 7］  
   [https://ja.wordpress.org/plugins/contact-form-7/](https://ja.wordpress.org/plugins/contact-form-7/)  
 - [詳しくはこちら](https://www.jlweb.jp/coding/basic/form/)
+- **［Contact Form 7 Auto Generator (import_form_cf7.php)］**
+  - **Mục đích:** Tự động hóa quá trình chuyển đổi HTML form tĩnh thành Contact Form 7 chuẩn và tự động sinh template gửi mail.
+  - **Cách sử dụng:**
+    1. Đảm bảo file `import_form_cf7.php` đã được include trong theme.
+    2. Trong file HTML template, thêm class `wpf-title` vào các thẻ tiêu đề của field và class `wpf-acceptance` vào thẻ bọc checkbox đồng ý điều khoản.
+    3. Truy cập màn hình quản trị **Contact (お問い合わせ)** của WordPress.
+    4. Mở **Screen Options (表示オプション)** ở góc trên cùng bên phải, tích chọn **Template Importer Tool**.
+    5. Ở khung công cụ dưới danh sách form, bạn cần nhập/chọn:
+       - **Form Name**: Tên của Contact Form sẽ được tạo.
+       - **Template File**: File giao diện chứa mã HTML tĩnh của form.
+       - **Form Class Selector**: Class hoặc ID bọc ngoài khu vực form bạn muốn convert.
+       Sau đó ấn nút **Generate Form**.
+    6. Hệ thống sẽ tự tạo Form và tự cấu hình Mail. Bạn chỉ cần copy mã shortcode sinh ra và dán ngược lại vào file template.
 
 #### Khi thực hiện di chuyển data
 
