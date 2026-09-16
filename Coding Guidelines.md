@@ -1096,12 +1096,6 @@ add_action( 'admin_footer-user-new.php', function() {
 - ［WPvivid］  
   [https://ja.wordpress.org/plugins/wpvivid-backuprestore/](https://ja.wordpress.org/plugins/wpvivid-backuprestore/)  
 
-#### データのバックアップ
-
-- ［BackWPup – WordPress Backup Plugin］  
-  [https://ja.wordpress.org/plugins/backwpup/](https://ja.wordpress.org/plugins/backwpup/)  
-- デフォルト設定：保存のタイミングは月に１回、上限12ファイル
-- ドメイン切り替え前のサイト等はうまくバックアップをとれないことがある（エラーが出る）ので切り替え後に設定
 
 #### ログインセキュリティ
 

@@ -1074,12 +1074,6 @@ Tại J-line chúng tôi khuyến nghị sử dụng những plugin dưới đâ
 - ［WPvivid］  
   [https://ja.wordpress.org/plugins/wpvivid-backuprestore/](https://ja.wordpress.org/plugins/wpvivid-backuprestore/)  
 
-#### Back-up data
-
-- ［BackWPup – WordPress Backup Plugin］  
-  [https://ja.wordpress.org/plugins/backwpup/](https://ja.wordpress.org/plugins/backwpup/)  
-- Cài đặt mặc định: thời điểm lưu trữ là mỗi tháng 1 lần, tối đa 12 file
-- Đối với các website trước khi chuyển đổi domain, đôi khi không thể backup đúng cách (xảy ra lỗi) vì vậy hãy thiết lập sau khi đã chuyển đổi domain
 
 #### Login security
 
