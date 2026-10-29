@@ -1,0 +1,11 @@
+# J-Line Rule Auditor — project-specific third-party exclusions
+# Copy to .jline-auditorignore at the project root only when automatic detection cannot identify a library.
+
+# Ignore a third-party path/folder. Glob-style ** and * are supported.
+path:**/legacy-vendor/**
+path:**/custom-widget/**
+
+# Ignore selector prefixes owned by a library when your own SCSS contains override selectors.
+# Example: selector:foo ignores .foo, .foo-item, .foo_item, #foo-root, etc.
+selector:foo
+selector:customwidget

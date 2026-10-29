@@ -1,0 +1,32 @@
+{
+  "name": "jline-rule-auditor",
+  "version": "2.6.0",
+  "private": true,
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\"",
+    "dev": "next dev --turbopack -p 3050",
+    "dev:clean": "npm run clean && next dev --turbopack -p 3050",
+    "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "start": "next start -p 3050",
+    "test:rules": "tsc -p tests/tsconfig.rules.json && node tests/regression.cjs",
+    "test:api": "tsc -p tests/tsconfig.api.json && node tests/api-regression.cjs",
+    "test": "npm run test:rules && npm run test:api && npm run test:page",
+    "test:page": "tsc -p tests/tsconfig.page.json --pretty false"
+  },
+  "dependencies": {
+    "jszip": "3.10.1",
+    "next": "15.5.25",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.6",
+    "@types/react": "19.1.14",
+    "@types/react-dom": "19.1.9",
+    "typescript": "5.9.2"
+  },
+  "engines": {
+    "node": ">=20.9.0 <25"
+  }
+}

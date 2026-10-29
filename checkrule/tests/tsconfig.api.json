@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": ".api-build",
+    "types": [],
+    "baseUrl": "..",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "typecheck-stubs.d.ts",
+    "../pages/api/scan-site.ts",
+    "../pages/api/detect-country.ts",
+    "../lib/types.ts"
+  ]
+}
