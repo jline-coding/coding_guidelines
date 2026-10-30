@@ -6,10 +6,8 @@ import { computed } from 'vue'
 const { Layout } = DefaultTheme
 const { lang } = useData()
 const { hasSidebar } = useSidebar()
-
 const isVn = computed(() => lang.value === 'vi')
 const logoUrl = withBase('/logo.png')
-
 const t = (vn, ja) => (isVn.value ? vn : ja)
 const local = (path) => withBase(isVn.value ? `/vn${path}` : path)
 
