@@ -1,0 +1,711 @@
+/* ==========================================================================
+   J-Line Corporation - Official Brand Theme for VitePress (Tailwind-based)
+   --------------------------------------------------------------------------
+   Quy ước:
+   - Màu, font, khoảng cách lấy từ tailwind.config.js qua theme() / @apply.
+   - Thẻ do VitePress tự sinh (.VP*) không gắn class được nên override bằng
+     @apply. Dùng tiền tố "!" (important) chỉ khi cần thắng style scoped của
+     VitePress.
+   - KHÔNG bọc override trong @layer: Tailwind sẽ purge các selector .VP*
+     vì chúng không xuất hiện trong file content.
+   ========================================================================== */
+
+/* preflight đã tắt trong config → base chỉ sinh biến --tw-* cho shadow/transform */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   1. Design tokens → biến của VitePress
+   ========================================================================== */
+
+:root {
+  /* J-Line Brand Color Tokens (dùng chung cho CSS thuần) */
+  --base: theme('colors.ink');
+  --primary: theme('colors.primary.DEFAULT');
+  --primary-light: theme('colors.primary.light');
+  --black: theme('colors.black');
+  --white: theme('colors.white');
+  --gray: theme('colors.gray.DEFAULT');
+  --gray-light: theme('colors.gray.light');
+  --gray-subtle: theme('colors.gray.subtle');
+  --gray-bg: theme('colors.gray.bg');
+  --gray-border: theme('colors.gray.border');
+  --text-muted: theme('colors.muted');
+  --text-subtle: theme('colors.subtle');
+
+  /* Map to VitePress Core Theme Variables */
+  --vp-c-brand-1: theme('colors.primary.DEFAULT');
+  --vp-c-brand-2: theme('colors.primary.dark');
+  --vp-c-brand-3: theme('colors.primary.deep');
+  --vp-c-brand-soft: theme('colors.primary.light');
+
+  --vp-c-text-1: theme('colors.ink');
+  --vp-c-text-2: theme('colors.muted');
+  --vp-c-text-3: theme('colors.subtle');
+
+  --vp-c-bg: theme('colors.white');
+  --vp-c-bg-alt: theme('colors.gray.subtle');
+  --vp-c-bg-elv: theme('colors.white');
+  --vp-c-bg-soft: theme('colors.gray.light');
+
+  --vp-c-border: theme('colors.gray.border');
+  --vp-c-divider: theme('colors.gray.border');
+  --vp-c-gutter: theme('colors.gray.border');
+
+  /* Navbar & Sidebar Layout Variables */
+  --vp-nav-bg-color: theme('colors.primary.DEFAULT');
+  --vp-nav-screen-bg-color: theme('colors.ink');
+  --vp-nav-height: theme('spacing.nav');
+  --vp-nav-logo-height: 30px;
+  --vp-sidebar-width: theme('spacing.sidebar');
+  --vp-sidebar-bg-color: theme('colors.gray.subtle');
+
+  /* Button Variables */
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-text: theme('colors.white');
+  --vp-button-brand-bg: theme('colors.primary.DEFAULT');
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-hover-text: theme('colors.white');
+  --vp-button-brand-hover-bg: theme('colors.primary.dark');
+  --vp-button-brand-active-bg: theme('colors.primary.deep');
+
+  --vp-button-alt-border: theme('colors.gray.border');
+  --vp-button-alt-text: theme('colors.ink');
+  --vp-button-alt-bg: theme('colors.white');
+  --vp-button-alt-hover-border: theme('colors.primary.DEFAULT');
+  --vp-button-alt-hover-text: theme('colors.primary.DEFAULT');
+  --vp-button-alt-hover-bg: theme('colors.primary.light');
+
+  /* Typography */
+  --vp-font-family-base: theme('fontFamily.sans');
+  --vp-font-family-mono: theme('fontFamily.mono');
+
+  /* Home Hero Gradient */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(135deg, theme('colors.primary.DEFAULT') 0%, #b5000e 55%, theme('colors.ink') 100%);
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+/* ==========================================================================
+   2. Top Navigation Bar (nền đỏ + logo/chữ trắng)
+   ========================================================================== */
+
+.VPNav {
+  @apply !bg-primary;
+}
+
+/* SP/Tablet (< 960px): VitePress để header position: relative → cuộn mất.
+   Cho header dính trên cùng (sticky giữ chỗ trong layout, không cần bù padding),
+   thanh "Menu / このページの内容" dính ngay bên dưới header. */
+@media (max-width: 959px) {
+  .VPNav {
+    @apply !sticky !top-0;
+  }
+
+  .VPLocalNav {
+    @apply !top-nav;
+  }
+}
+
+.VPNavBar,
+.VPNavBar.has-sidebar,
+.VPNavBar.home,
+.VPNavBar.top,
+.VPNavBar .wrapper,
+.VPNavBar .container,
+.VPNavBar .content,
+.VPNavBar .content-body {
+  @apply !bg-primary;
+}
+
+/* Logo zone (chỉ trong container của navbar để không ảnh hưởng dropdown) */
+.VPNavBar .container > .title,
+.VPNavBar .divider,
+.VPNavBar .divider-line {
+  @apply !bg-transparent !border-b-transparent;
+}
+
+.VPNavBar {
+  @apply !border-b-0 shadow-[0_2px_8px_rgba(0,0,0,0.12)];
+}
+
+/* Desktop ≥ 960px: [Logo zone = độ rộng sidebar] [Search + Nav] — cùng màu đỏ, ngăn bằng 1 vạch mảnh */
+@media (min-width: theme('screens.desk')) {
+  .VPNavBar .container {
+    @apply !max-w-none;
+  }
+
+  .VPNavBar.has-sidebar .container > .title {
+    @apply !absolute left-0 top-0 z-[2] h-full !w-sidebar !px-6 !bg-primary border-0 border-r border-solid border-black/10;
+  }
+
+  .VPNavBar.has-sidebar .container > .title .VPNavBarTitle .title {
+    @apply !border-b-0 h-nav;
+  }
+
+  .VPNavBar.has-sidebar .content {
+    @apply !pl-sidebar !pr-6;
+  }
+
+  .VPSidebar {
+    @apply !w-sidebar !px-4;
+  }
+
+  .VPContent.has-sidebar {
+    @apply !pl-sidebar !pr-0;
+  }
+
+  .VPLocalNav.has-sidebar {
+    @apply !pl-sidebar;
+  }
+}
+
+.VPNavBarTitle .title {
+  @apply !text-white flex items-center !overflow-visible;
+}
+
+.VPNavBarTitle .logo {
+  @apply !h-[30px] !w-auto !max-w-[180px] object-contain !mr-0 shrink-0;
+}
+
+/* Menu links trên navbar
+   Lưu ý: dùng text-[14px] (chỉ font-size). KHÔNG dùng text-sm vì nó kèm
+   line-height 1.25rem → đè line-height 64px của VitePress, link bị lùn lại. */
+.VPNavBarMenuLink {
+  @apply relative h-nav !px-3.5 !text-[14px] !font-semibold !text-white/85 !transition-colors !duration-200;
+}
+
+.VPNavBarMenuLink:hover {
+  @apply !text-white bg-black/10;
+}
+
+.VPNavBarMenuLink.active {
+  @apply !text-white !font-bold bg-black/10;
+}
+
+/* Thanh trắng sát mép dưới header, cao hết chiều cao navbar */
+.VPNavBarMenuLink.active::after {
+  @apply absolute inset-x-3.5 bottom-0 h-[3px] rounded-t-sm bg-white content-[''];
+}
+
+/* Language switcher & flyout trên navbar */
+.VPNavBar .VPFlyout .button,
+.VPNavBar .VPFlyout .text,
+.VPNavBar .VPFlyout .option-icon,
+.VPNavBar .VPFlyout .text-icon {
+  @apply !text-white;
+}
+
+.VPNavBar .menu + .translations::before,
+.VPNavBar .menu + .appearance::before,
+.VPNavBar .menu + .social-links::before,
+.VPNavBar .translations + .appearance::before {
+  @apply !bg-white/30;
+}
+
+/* Dropdown (language switcher) — panel trắng gọn */
+.VPFlyout .VPMenu {
+  @apply min-w-[160px] !rounded-[10px] !border !border-solid !border-gray-border !p-1.5 !shadow-[0_10px_28px_rgba(0,0,0,0.12)];
+}
+
+.VPFlyout .VPMenu .group .title,
+.VPFlyout .VPMenu p.title {
+  @apply !static !h-auto !w-auto rounded-r-md border-0 border-l-[3px] border-solid border-primary !bg-primary-light !px-3 !py-1.5 !text-[13px] !font-bold !text-primary;
+}
+
+.VPFlyout .VPMenuLink .link {
+  @apply !rounded-md !text-[13px] !text-ink;
+}
+
+.VPFlyout .VPMenuLink .link:hover {
+  @apply !bg-gray-light !text-primary;
+}
+
+/* Search box trên navbar */
+.VPNavBarSearch {
+  @apply !pl-3;
+}
+
+@media (min-width: theme('screens.desk')) {
+  .VPNavBarSearch {
+    @apply !pl-6;
+  }
+}
+
+.VPNavBar .DocSearch-Button {
+  @apply !m-0 !h-9 !rounded-lg !border !border-solid !border-white/40 !bg-black/20 !transition-all !duration-200;
+}
+
+.VPNavBar .DocSearch-Button:hover {
+  @apply !border-white !bg-black/30;
+}
+
+@media (min-width: theme('screens.md')) {
+  .VPNavBar .DocSearch-Button {
+    @apply !px-3;
+  }
+}
+
+@media (max-width: 767px) {
+  .VPNavBar .DocSearch-Button {
+    @apply !w-9 !justify-center !p-0;
+  }
+
+  .VPNavBar .DocSearch-Button .DocSearch-Button-Keys,
+  .VPNavBar .DocSearch-Button .DocSearch-Button-Placeholder {
+    @apply !hidden;
+  }
+}
+
+.VPNavBar .DocSearch-Search-Icon,
+.VPNavBar .DocSearch-Button-Placeholder {
+  @apply !text-white;
+}
+
+.VPNavBar .DocSearch-Button-Keys {
+  @apply !inline-flex !min-w-0 !items-center !gap-0.5 !rounded-[5px] !border !border-solid !border-white/30 !bg-black/20 !px-1.5 !py-0.5;
+}
+
+.VPNavBar .DocSearch-Button-Key,
+.VPNavBar .DocSearch-Button-Key:first-child::after {
+  @apply !m-0 !h-auto !border-0 !bg-transparent !p-0 !text-[11px] !font-semibold !leading-tight !text-white !shadow-none;
+}
+
+/* Hamburger icon */
+.VPNavBarHamburger .top,
+.VPNavBarHamburger .middle,
+.VPNavBarHamburger .bottom {
+  @apply !bg-white;
+}
+
+/* --------------------------------------------------------------------------
+   2.1 Responsive navbar (FIX)
+   VitePress hiện menu ngang từ 768px → 6 mục + search + ngôn ngữ bị tràn.
+   Dưới 1280px: ẩn menu ngang, dùng hamburger + màn hình menu (VPNavScreen).
+   -------------------------------------------------------------------------- */
+@media (max-width: 1279px) {
+  .VPNavBarMenu,
+  .VPNavBarExtra {
+    @apply !hidden;
+  }
+
+  .VPNavBarHamburger {
+    @apply !flex;
+  }
+
+  .VPNavScreen {
+    @apply !block;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2.2 Mobile menu screen (FIX)
+   Nền xám đậm (#3E3E3E) nhưng chữ dùng --vp-c-text-1 cùng màu → mất chữ.
+   Ghi đè biến màu ngay trong VPNavScreen để mọi phần con đều nhận chữ trắng.
+   -------------------------------------------------------------------------- */
+.VPNavScreen {
+  --vp-c-text-1: theme('colors.white');
+  --vp-c-text-2: rgb(255 255 255 / 0.65);
+  --vp-c-text-3: rgb(255 255 255 / 0.5);
+  --vp-c-divider: rgb(255 255 255 / 0.14);
+  --vp-c-brand-1: #ff6b76;
+  @apply border-0 border-t border-solid border-white/10;
+}
+
+.VPNavScreen .VPNavScreenMenuLink,
+.VPNavScreen .VPNavScreenMenuGroup .button {
+  @apply !text-[15px] !font-semibold;
+}
+
+.VPNavScreen .VPNavScreenMenuLink:hover,
+.VPNavScreen .VPNavScreenMenuGroupLink:hover {
+  @apply !text-white;
+}
+
+/* ==========================================================================
+   3. Sidebar navigation
+   ========================================================================== */
+
+.VPSidebar {
+  @apply !border-0 !border-r !border-solid !border-gray-border !bg-gray-subtle;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.VPSidebar:hover {
+  scrollbar-color: theme('colors.gray.DEFAULT') transparent;
+}
+
+@media (min-width: theme('screens.desk')) {
+  .VPSidebar {
+    @apply !top-nav !h-[calc(100vh-theme(spacing.nav))] !pb-12 !pt-[18px];
+  }
+
+  /* Ẩn lớp curtain sticky của VitePress gây cắt mép trên khi cuộn */
+  .VPSidebar .curtain {
+    @apply !hidden;
+  }
+}
+
+/* Scrollbar WebKit tự ẩn (không có utility Tailwind tương ứng) */
+.VPSidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.VPSidebar::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+.VPSidebar::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 6px 0;
+}
+
+.VPSidebar::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-transparent transition-colors duration-200;
+}
+
+.VPSidebar:hover::-webkit-scrollbar-thumb {
+  @apply bg-ink/20;
+}
+
+.VPSidebar::-webkit-scrollbar-thumb:hover {
+  @apply bg-ink/40;
+}
+
+.VPSidebarItem.level-0 {
+  @apply !pb-3;
+}
+
+.VPSidebarItem.level-0 > .item {
+  @apply rounded-md !px-2 !py-1;
+}
+
+.VPSidebarItem.level-0 > .item > .text,
+.VPSidebarItem.level-0 > .item > .link > .text {
+  @apply !text-[0.86rem] !font-bold tracking-[0.01em] !text-black;
+}
+
+.VPSidebarItem.level-0 > .item > .link:hover > .text,
+.VPSidebarItem.level-0.is-active > .item > .link > .text {
+  @apply !text-primary;
+}
+
+.VPSidebarItem.level-0 > .items {
+  @apply ml-2 border-0 border-l border-solid border-gray-border !pl-2;
+}
+
+/* Link cấp 2: luôn có sẵn viền trái 3px trong suốt + padding cố định để khi
+   chuyển sang active chỉ đổi MÀU, không đổi kích thước → không bị chớp/nhảy.
+   Chỉ transition màu nền & màu chữ (không dùng transition-all). */
+.VPSidebarItem.level-1 > .item > .link {
+  @apply my-px rounded-l-none rounded-r-md border-0 border-l-[3px] border-solid border-transparent !py-1.5 !pl-[9px] !pr-2.5 transition-colors duration-150;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.VPSidebarItem.level-1 > .item > .link > .text {
+  @apply !text-[0.84rem] !text-muted !transition-colors !duration-150;
+}
+
+.VPSidebarItem.level-1 > .item > .link:hover {
+  @apply bg-gray-bg;
+}
+
+.VPSidebarItem.level-1 > .item > .link:hover > .text {
+  @apply !text-ink;
+}
+
+.VPSidebarItem.level-1.is-active > .item > .link {
+  @apply border-primary !bg-primary-light;
+}
+
+.VPSidebarItem.level-1.is-active > .item > .link > .text {
+  @apply !font-semibold !text-primary;
+}
+
+/* Mục lục bên phải (Outline) */
+.VPDocAsideOutline .content {
+  @apply border-0 border-l border-solid border-gray-border;
+}
+
+.VPDocAsideOutline .outline-marker {
+  @apply !w-0.5 !bg-primary;
+}
+
+.VPDocAsideOutline .outline-title {
+  @apply !text-[0.82rem] !font-bold tracking-[0.02em] !text-ink;
+}
+
+.VPDocAsideOutline .outline-link {
+  @apply !text-[0.82rem] !text-muted;
+}
+
+.VPDocAsideOutline .outline-link:hover,
+.VPDocAsideOutline .outline-link.active {
+  @apply font-semibold !text-primary;
+}
+
+/* ==========================================================================
+   4. Home page hero & feature cards
+   ========================================================================== */
+
+.VPHome {
+  @apply !pb-16;
+}
+
+.VPHomeHero {
+  @apply relative mb-10 border-0 border-b border-solid border-gray-border bg-gradient-to-br from-primary-light via-white via-60% to-gray-subtle !px-6 !pb-[52px] !pt-[calc(theme(spacing.nav)+56px)];
+}
+
+.VPHomeHero .name {
+  @apply !font-extrabold tracking-[-0.02em];
+}
+
+.VPHomeHero .text {
+  @apply !font-extrabold !text-ink;
+}
+
+.VPHomeHero .tagline {
+  @apply !max-w-[680px] font-medium !text-muted;
+}
+
+.VPButton.brand {
+  @apply !font-semibold shadow-[0_4px_14px_rgba(230,0,18,0.22)] !transition-all !duration-200;
+}
+
+.VPButton.brand:hover {
+  @apply -translate-y-0.5 shadow-[0_6px_20px_rgba(230,0,18,0.32)];
+}
+
+.VPFeatures .VPFeature {
+  @apply !rounded-[10px] !border !border-solid !border-gray-border !border-t-[3px] !border-t-primary !bg-white shadow-[0_2px_8px_rgba(0,0,0,0.03)] !transition-all !duration-200;
+}
+
+.VPFeatures .VPFeature:hover {
+  @apply -translate-y-[3px] !border-primary !bg-primary-light shadow-[0_10px_24px_rgba(230,0,18,0.08)];
+}
+
+.VPFeatures .VPFeature .title {
+  @apply !text-[1.02rem] !font-bold !text-ink transition-colors duration-200;
+}
+
+.VPFeatures .VPFeature:hover .title {
+  @apply !text-primary;
+}
+
+.VPFeatures .VPFeature .details {
+  @apply !leading-relaxed !text-muted;
+}
+
+/* ==========================================================================
+   5. Nội dung tài liệu (.vp-doc)
+   ========================================================================== */
+
+.vp-doc {
+  @apply leading-[1.8] text-ink;
+}
+
+/* H1: chữ đậm + thanh nhấn đỏ */
+.vp-doc h1 {
+  @apply relative mb-7 border-0 border-b-2 border-solid border-gray-border pb-[0.65rem] text-[1.8rem] font-extrabold leading-[1.35] text-black;
+}
+
+.vp-doc h1::after {
+  @apply absolute -bottom-0.5 left-0 h-[3px] w-[72px] bg-primary content-[''];
+}
+
+/* H2: nền xám nhạt + viền trái đỏ */
+.vp-doc h2 {
+  @apply mb-[1.1rem] mt-[2.4rem] rounded-r-md border-0 border-l-4 border-solid border-primary bg-gray-light px-[0.95rem] py-[0.55rem] text-[1.28rem] font-bold leading-[1.45] text-ink;
+}
+
+/* H3: gạch chân mảnh + vạch đỏ nhỏ */
+.vp-doc h3 {
+  @apply mb-3 mt-[1.8rem] flex items-center gap-2 border-0 border-b border-solid border-gray-border pb-[0.35rem] text-[1.1rem] font-bold text-ink;
+}
+
+.vp-doc h3::before {
+  @apply inline-block h-4 w-1 shrink-0 rounded-sm bg-primary content-[''];
+}
+
+.vp-doc h4 {
+  @apply mb-[0.55rem] mt-[1.35rem] text-[1rem] font-bold text-ink;
+}
+
+/* Links — chỉ đặt viền dưới bằng CSS thuần để không đè border của các
+   card link dùng class Tailwind trong file .md (border, hover:border-primary…) */
+.vp-doc a {
+  @apply font-medium text-primary no-underline transition-all duration-200;
+  border-bottom: 1px solid theme('colors.primary.DEFAULT / 30%');
+}
+
+.vp-doc a:hover {
+  @apply text-[#b5000e];
+  border-bottom-color: #b5000e;
+}
+
+/* Ký hiệu "#" hiện khi hover tiêu đề: bỏ gạch chân của .vp-doc a,
+   căn giữa theo chiều dọc và đặt ra ngoài viền đỏ của H2 */
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  @apply relative;
+}
+
+.vp-doc .header-anchor {
+  @apply top-1/2 -translate-y-1/2 border-0 font-semibold leading-none text-primary/60;
+}
+
+.vp-doc .header-anchor:hover {
+  @apply text-primary;
+}
+
+.vp-doc h1 .header-anchor {
+  @apply top-[calc(50%-0.325rem)];
+}
+
+.vp-doc h2 .header-anchor {
+  @apply -ml-[1.3em];
+}
+
+/* Inline code */
+.vp-doc :not(pre) > code {
+  @apply rounded-[5px] border border-solid border-gray-border !bg-gray-bg px-1.5 py-0.5 text-[0.87em] font-medium !text-primary-dark;
+}
+
+/* Code blocks */
+.vp-doc div[class*='language-'] {
+  @apply my-[1.2rem] rounded-lg border border-solid border-gray-border !bg-gray-subtle;
+}
+
+/* --------------------------------------------------------------------------
+   Thanh cuộn ngang hiện rõ cho code block / bảng bị tràn
+   -------------------------------------------------------------------------- */
+.vp-doc [class*='language-'] pre,
+.vp-doc .table-wrap {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.gray.DEFAULT') transparent;
+}
+
+.vp-doc [class*='language-'] pre::-webkit-scrollbar,
+.vp-doc .table-wrap::-webkit-scrollbar {
+  height: 8px;
+}
+
+.vp-doc [class*='language-'] pre::-webkit-scrollbar-track,
+.vp-doc .table-wrap::-webkit-scrollbar-track {
+  @apply mx-3 bg-transparent;
+}
+
+.vp-doc [class*='language-'] pre::-webkit-scrollbar-thumb,
+.vp-doc .table-wrap::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-gray;
+}
+
+.vp-doc [class*='language-'] pre::-webkit-scrollbar-thumb:hover,
+.vp-doc .table-wrap::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/70;
+}
+
+/* --------------------------------------------------------------------------
+   Nội dung full chiều rộng (bỏ giới hạn 688px mặc định của VitePress)
+   -------------------------------------------------------------------------- */
+.VPDoc.has-aside .content-container,
+.VPDoc .content-container {
+  @apply !max-w-none;
+}
+
+.VPDoc:not(.has-sidebar) .container,
+.VPDoc:not(.has-sidebar) .content {
+  @apply !max-w-none;
+}
+
+@media (min-width: theme('screens.desk')) {
+  .VPDoc {
+    @apply !px-10;
+  }
+}
+
+@media (min-width: theme('screens.xl')) {
+  .VPDoc .content {
+    @apply min-w-0 flex-1;
+  }
+
+  /* Trang không có mục lục (outline rỗng) → ẩn cột phải để nội dung lấp đầy */
+  .VPDoc .aside:not(:has(.VPDocAsideOutline.has-outline)) {
+    @apply !hidden;
+  }
+}
+
+/* Blockquotes */
+.vp-doc blockquote {
+  @apply my-5 rounded-r-lg border-0 border-l-4 border-solid border-ink bg-gray-light px-4 py-3 text-ink;
+}
+
+.vp-doc blockquote p {
+  @apply text-[0.94rem] text-muted;
+}
+
+/* Tables — header xám đậm + viền dưới đỏ.
+   Bảng được bọc trong .table-wrap (plugin markdown-table-wrap.js) → bảng rộng
+   cuộn ngang trong khung thay vì bị cắt. */
+.vp-doc .table-wrap {
+  @apply my-[1.4rem] max-w-full overflow-x-auto rounded-lg border border-solid border-gray-border shadow-[0_1px_3px_rgba(0,0,0,0.02)];
+}
+
+.vp-doc table {
+  @apply my-[1.4rem] block w-full overflow-x-auto border-collapse rounded-lg border border-solid border-gray-border shadow-[0_1px_3px_rgba(0,0,0,0.02)];
+}
+
+.vp-doc .table-wrap > table {
+  @apply m-0 table w-full min-w-full overflow-visible rounded-none border-0 shadow-none;
+}
+
+.vp-doc th {
+  @apply border border-solid border-[#4f4f4f] border-b-2 border-b-primary !bg-ink px-4 py-[11px] text-left text-[0.9rem] font-semibold !text-white;
+}
+
+.vp-doc td {
+  @apply border border-solid border-gray-border px-4 py-[11px] text-[0.93rem] text-ink;
+}
+
+.vp-doc tr:nth-child(2n) td {
+  @apply bg-gray-subtle;
+}
+
+.vp-doc tr:hover td {
+  @apply bg-primary-light;
+}
+
+/* Pager Trang trước / Trang tiếp */
+.VPDocFooter .pager-link {
+  @apply !rounded-lg !border !border-solid !border-gray-border bg-white !transition-all !duration-200;
+}
+
+.VPDocFooter .pager-link:hover {
+  @apply !border-primary bg-primary-light;
+}
+
+.VPDocFooter .pager-link .desc {
+  @apply !text-subtle;
+}
+
+.VPDocFooter .pager-link .title {
+  @apply font-semibold !text-ink;
+}
+
+.VPDocFooter .pager-link:hover .title {
+  @apply !text-primary;
+}
+
+/* Ẩn footer mặc định của VitePress (đã có footer công ty trong Layout.vue) */
+.VPFooter {
+  @apply !hidden;
+}

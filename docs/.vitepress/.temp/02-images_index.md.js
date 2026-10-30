@@ -1,0 +1,19 @@
+import { ssrRenderAttrs } from "vue/server-renderer";
+import { useSSRContext } from "vue";
+import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
+const __pageData = JSON.parse('{"title":"2. 画像に関して","description":"","frontmatter":{},"headers":[],"relativePath":"02-images/index.md","filePath":"02-images/index.md"}');
+const _sfc_main = { name: "02-images/index.md" };
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(_attrs)}><h1 id="_2-画像に関して" tabindex="-1">2. 画像に関して <a class="header-anchor" href="#_2-画像に関して" aria-label="Permalink to &quot;2. 画像に関して&quot;">​</a></h1><p class="text-muted text-base mb-6">書き出し・レスポンシブ画像・画像形式（WebP/SVG）・ネーミング・alt属性</p><h2 id="目次" tabindex="-1">目次 <a class="header-anchor" href="#目次" aria-label="Permalink to &quot;目次&quot;">​</a></h2><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4"><a href="./2-1-export" class="group block rounded-lg border border-gray-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary-light !no-underline"><div class="flex items-center justify-between"><span class="font-bold text-base group-hover:text-primary">2-1. 書き出しについて</span><span class="text-xs font-semibold text-subtle group-hover:text-primary">→</span></div></a><a href="./2-2-responsive-images" class="group block rounded-lg border border-gray-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary-light !no-underline"><div class="flex items-center justify-between"><span class="font-bold text-base group-hover:text-primary">2-2. レスポンシブ画像について</span><span class="text-xs font-semibold text-subtle group-hover:text-primary">→</span></div></a><a href="./2-3-formats-and-webp" class="group block rounded-lg border border-gray-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary-light !no-underline"><div class="flex items-center justify-between"><span class="font-bold text-base group-hover:text-primary">2-3. 画像形式について（WebP・SVG）</span><span class="text-xs font-semibold text-subtle group-hover:text-primary">→</span></div></a><a href="./2-4-naming-rules" class="group block rounded-lg border border-gray-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary-light !no-underline"><div class="flex items-center justify-between"><span class="font-bold text-base group-hover:text-primary">2-4. 画像のネーミングルール</span><span class="text-xs font-semibold text-subtle group-hover:text-primary">→</span></div></a><a href="./2-5-alt-attribute" class="group block rounded-lg border border-gray-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary-light !no-underline"><div class="flex items-center justify-between"><span class="font-bold text-base group-hover:text-primary">2-5. altについて</span><span class="text-xs font-semibold text-subtle group-hover:text-primary">→</span></div></a><a href="./2-6-text-as-image" class="group block rounded-lg border border-gray-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary-light !no-underline"><div class="flex items-center justify-between"><span class="font-bold text-base group-hover:text-primary">2-6. フォントの画像化について</span><span class="text-xs font-semibold text-subtle group-hover:text-primary">→</span></div></a></div></div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("02-images/index.md");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+export {
+  __pageData,
+  index as default
+};

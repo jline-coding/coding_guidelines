@@ -1,0 +1,19 @@
+import { ssrRenderAttrs } from "vue/server-renderer";
+import { useSSRContext } from "vue";
+import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
+const __pageData = JSON.parse('{"title":"1-8. buttonタグ・aタグについて","description":"","frontmatter":{},"headers":[],"relativePath":"01-html/1-8-buttons-and-links.md","filePath":"01-html/1-8-buttons-and-links.md"}');
+const _sfc_main = { name: "01-html/1-8-buttons-and-links.md" };
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(_attrs)}><h1 id="_1-8-buttonタグ・aタグについて" tabindex="-1">1-8. buttonタグ・aタグについて <a class="header-anchor" href="#_1-8-buttonタグ・aタグについて" aria-label="Permalink to &quot;1-8. buttonタグ・aタグについて&quot;">​</a></h1><h2 id="button-タグに関して" tabindex="-1"><code>&lt;button&gt;</code>タグに関して <a class="header-anchor" href="#button-タグに関して" aria-label="Permalink to &quot;\`&lt;button&gt;\`タグに関して&quot;">​</a></h2><ul><li>JavaScriptで動作するインタラクティブな要素（モーダルを開く、タブ切り替えなど）や、フォームの送信ボタンに使用する。</li><li>判断基準：クリックしても<strong>URLが変わらない動作</strong>であること。</li></ul><h2 id="a-タグについて" tabindex="-1"><code>&lt;a&gt;</code>タグについて <a class="header-anchor" href="#a-タグについて" aria-label="Permalink to &quot;\`&lt;a&gt;\`タグについて&quot;">​</a></h2><ul><li>ページ遷移を伴う場合は<code>&lt;a&gt;</code>タグを使用する（<strong>URLが変わるもの</strong>はすべて<code>&lt;a&gt;</code>）。</li><li>TOPへ戻るボタンやエントリーボタンの構築には必ず<code>&lt;a&gt;</code>を使用し、<code>&lt;button&gt;</code>は使用しない。</li><li>aタグのクリック領域はボタン全体にかかるようにする。</li><li><strong><code>href</code>属性の正しく完璧な設定方法:</strong><ul><li><strong>内部リンク（Internal link）:</strong><ul><li>下層ページなどでリンク切れが発生しないよう、原則としてルート相対パス（<code>/</code>から始まるパス）を使用する（例：<code>href=&quot;/about/&quot;</code>）。</li><li>URLの末尾には必ずスラッシュ（トレイリングスラッシュ）を付与する（例：<code>href=&quot;/contact/&quot;</code>とし、<code>href=&quot;/contact&quot;</code>は避ける）。これにより、301リダイレクトを防ぎ、表示速度とSEOの向上につながります。</li><li>ローカル環境やテスト環境のドメイン（例：<code>http://localhost/...</code>）を直書き（ハードコード）しないこと。</li></ul></li><li><strong>外部リンク（External link）:</strong><ul><li>必ず <code>https://</code> または <code>http://</code> から始まる完全なURLを記述する（例：<code>href=&quot;https://google.com&quot;</code>）。</li><li>外部リンクには必ず <code>target=&quot;_blank&quot;</code> と <code>rel=&quot;noopener noreferrer&quot;</code> をセットで記述すること。</li></ul></li><li><strong>電話番号・メールのリンク（Tel &amp; Mailto）:</strong><ul><li>電話番号: <code>href=&quot;tel:電話番号&quot;</code> の形式を使用し、スペースやハイフンを含めないこと（例：テキスト表示が <code>03-1234-5678</code> であっても、<code>href=&quot;tel:0312345678&quot;</code> とする）。</li><li>メール: <code>href=&quot;mailto:メールアドレス&quot;</code> の形式を使用する（例：<code>href=&quot;mailto:info@example.com&quot;</code>）。</li></ul></li><li><strong>ページ内アンカーリンク（Anchor link）:</strong><ul><li>同一ページ内: <code>href=&quot;#アンカーID&quot;</code> とする（例：<code>href=&quot;#contact&quot;</code>）。</li><li>別ページから特定のセクションへ遷移させる場合: ルート相対パス＋アンカーIDとする（例：<code>href=&quot;/#contact&quot;</code> または <code>href=&quot;../#contact&quot;</code>）。</li></ul></li><li><strong>WordPress環境での記述方法:</strong><ul><li>URLをハードコードせず、必ずWordPressの動的出力関数を使用すること： <ul><li>ホームURL: <code>&lt;?php echo esc_url( home_url( &#39;/&#39; ) ); ?&gt;</code></li><li>固定ページや記事のリンク: <code>&lt;?php echo esc_url( get_permalink( $page_id ) ); ?&gt;</code></li><li>テーマ内の静的ファイル（画像・CSS・JSなど）: <code>&lt;?php echo esc_url( get_theme_file_uri( &#39;/assets/images/logo.svg&#39; ) ); ?&gt;</code></li></ul></li></ul></li></ul></li></ul></div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("01-html/1-8-buttons-and-links.md");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const _18ButtonsAndLinks = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+export {
+  __pageData,
+  _18ButtonsAndLinks as default
+};
