@@ -5,8 +5,12 @@
   - Trong thư mục vendor, thêm các file js, css của plugin bên ngoài như slider, v.v.
 - Không upload file Sass lên server.
 - Xóa các file hoặc hình ảnh không cần thiết khỏi cả server và môi trường local.
-- Vì toàn bộ thư mục cài đặt sẽ nằm dưới sự quản lý của WordPress, cần tạo một folder riêng cho WordPress và đặt toàn bộ vào trong đó.
-  - Để đảm bảo tính quản lý, đặt index.php và .htaccess trực tiếp dưới thư mục root. Phần core của WordPress sẽ được lưu trong folder /wp-bridge2025/.
+- Vì toàn bộ thư mục cài đặt sẽ nằm dưới sự quản lý của WordPress, cần tạo một folder riêng cho WordPress và đặt toàn bộ vào trong đó:
+  - **Thư mục cài đặt WordPress (`wp-bridge{yyyy}`):** Thống nhất đặt tên thư mục cài đặt WordPress theo định dạng `wp-bridge{yyyy}` (`{yyyy}` là năm thực hiện, ví dụ: `wp-bridge2026`), **áp dụng chung cho cả môi trường Test và môi trường Production** (ví dụ: `https://www.example.com/wp-bridge2026/`).
+  - Để đảm bảo tính quản lý, đặt `index.php` và `.htaccess` trực tiếp dưới thư mục root của site, còn phần core WordPress lưu bên trong thư mục `/wp-bridge{yyyy}/`.
+- **Quy tắc quản lý file trên Git:**
+  - **Đối với dự án không phải WordPress (Web tĩnh / `TEMPLATE_HTML`):** **Bắt buộc đưa thư mục `public/`** (chứa các file HTML, CSS, JS... đã build) **lên Git để quản lý**, giúp phía Nhật Bản thuận tiện kiểm tra và upload file (không chặn `public/` trong `.gitignore`; chỉ loại trừ các file không cần thiết như `node_modules/`, `.env`, `*.map`).
+  - **Đối với dự án WordPress (`TEMPLATE_WP`):** **Chỉ đưa mã nguồn Theme của WordPress lên Git** để quản lý (không đẩy bộ cài lõi WordPress lên Git).
 
 ### Cấu trúc thư mục TEMPLATE_HTML
 

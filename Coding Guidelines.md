@@ -37,8 +37,12 @@
   - vendorフォルダにはスライダーなどのプラグインのjs,cssをいれる
 - Sassファイルはサーバーにはアップしない
 - 不要なファイルや画像はサーバー並びにローカル環境から削除する
-- WordPressの設置ディレクトリは、設置配下がWordPressの管理配下となるため、WordPressフォルダを作成しその中に入れる
-  - 管理性を考慮してルート直下に index.php、.htaccess を設置し、WordPress本体は「wp-bridge2025」フォルダに格納すること。
+- WordPressの設置ディレクトリは、設置配下がWordPressの管理配下となるため、WordPressフォルダを作成しその中に入れる：
+  - **WordPressのインストールディレクトリ（`wp-bridge{yyyy}`）：** WordPress本体を設置するディレクトリ名は、**テスト環境・本番環境ともに共通で `wp-bridge{yyyy}`**（`{yyyy}` は制作年、例：`wp-bridge2026`）の形式に統一すること（例：`https://www.example.com/wp-bridge2026/`）。
+  - 管理性を考慮してサイトルート直下に `index.php`、`.htaccess` を設置し、WordPress本体は `/wp-bridge{yyyy}/` フォルダ内に格納すること。
+- **Gitでのファイル管理ルール：**
+  - **WordPress以外の案件（静的サイト / `TEMPLATE_HTML`）：** ビルド済みの公開用フォルダ（**`public/`** 内のHTML・CSS・JS等）は、**必ずGitにアップして管理すること**（日本側でのファイル確認・アップロード作業を円滑にするため、`public/` は `.gitignore` で除外しない。※ `node_modules/`、`.env`、`*.map` 等の不要ファイルのみ除外する）。
+  - **WordPress案件（`TEMPLATE_WP`）：** **WordPressのテーマのみをGitにアップして管理すること**（WordPress本体一式はGitに含めない）。
 
 #### TEMPLATE_HTMLのフォルダ構成
 
@@ -329,7 +333,11 @@ TEMPLATE_WP/
 - 上に戻るボタンはデザインが無くても設置すること（サイトに使われている色を使うこと）
 - 各セクションにはスクロール時のフェード演出を付与すること。参考サイト： 
   [https://web-loid.net/web/scroll-effect-js/](https://web-loid.net/web/scroll-effect-js/)
+  - **ページ内検索（`Ctrl + F` / Find in page）への対応：** スクロール時のフェード演出（InView処理）を実装する際、初期状態の非表示に **`display: none` や `visibility: hidden` を使用しないこと**（画面上にまだ表示されていないコンテンツがページ内検索でヒットしなくなるため）。必ず `opacity: 0` や `transform: translate(...)` を使用し、未表示の状態でもページ内検索ができるようにすること。
 - ホバーアクションは、特別な指示がない限り「薄くなる（opacity変更）」アクションを設定する。
+- **スマートフォンでのタップ時のフィードバック（`:active` 対応）：**
+  - スマートフォンでは `:hover` が機能しないため、リンク（`<a>`）やボタン（`<button>`）をタップしたことが分かりやすくなるよう、`:active` 時のエフェクトを設定すること。
+  - なお、iOSのSafariではデフォルトで `:active` が適用されないため、`<body ontouchstart="">` を追加すること。
 - WordPress等の記事内テキストリンクには、下線（underline）を付けること。
 - cookieポップアップは全サイトで標準実装とし、プライバシーや個人情報へのリンク設定をすること。
 
@@ -721,6 +729,10 @@ $newsLink.show();
 ### 納品の仕方
 
 * データ納品・本番公開共に、納品する際は不要なファイルは含まないこと。
+* `.map`（ソースマップ）ファイル、`.scss`、`.env`、`node_modules` など、公開ファイルとして不要なファイルは納品ファイルや公開サーバーに含めないこと。
+* **ビルドテンプレート（`TEMPLATE_HTML` / `TEMPLATE_WP`）を使用している案件の納品ルール：**
+  * 案件に着手する前に、`README.md` をよく読み、テンプレートの運用方法を把握すること。
+  * 日本側へデータを納品する前に、必ず**ビルドを実行**し、データの確認（表示確認や `.map` 等の不要ファイルが含まれていないかの確認）を行ったうえで納品すること。
 * 公開作業の際は[「チェックリスト」](https://docs.google.com/spreadsheets/d/1_iD95RWSG4_AlToFlA80eeN0c0eMDW0rgP1ahh_aWuo/edit?gid=0#gid=0)を参考に確認しながら作業を進めること
 
 #### データ納品
@@ -866,7 +878,12 @@ $newsLink.show();
 
 ### 構築方法に関して
 
-- 「wp2026」などフォルダを作成し、その中にWordpressを設置する
+- **WordPressのインストールディレクトリ（`wp-bridge{yyyy}`）：**
+  - WordPress本体を設置するディレクトリ名は、**テスト環境・本番環境ともに共通で `wp-bridge{yyyy}`**（`{yyyy}` は制作年、例：`wp-bridge2026`）の形式に統一すること。
+  - 例：`https://www.example.com/wp-bridge2026/`
+  - 管理性を考慮してサイトルート直下に `index.php`、`.htaccess` を設置し、WordPress本体は `/wp-bridge{yyyy}/` フォルダ内に格納すること。
+
+- 固定ページ、カテゴリー、タグ、カスタム投稿タイプ、カスタムタクソノミーなどのスラッグ（Slug）には、必ず**英語**（半角英小文字・数字・ハイフン区切り）を使用すること（日本語スラッグによるURLエンコード化を防ぐため）。
 
 - プロジェクトのメイン開発担当者は、WordPress管理画面用に以下の2つの管理者（Administrator）アカウントを作成してください：
   - **マスターアカウント（メインアカウント）:** WordPressセットアップ時に作成。

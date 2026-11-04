@@ -37,8 +37,12 @@ Thông qua việc áp dụng guideline này, chúng tôi hướng tới việc �
   - Trong thư mục vendor, thêm các file js, css của plugin bên ngoài như slider, v.v.
 - Không upload file Sass lên server.
 - Xóa các file hoặc hình ảnh không cần thiết khỏi cả server và môi trường local.
-- Vì toàn bộ thư mục cài đặt sẽ nằm dưới sự quản lý của WordPress, cần tạo một folder riêng cho WordPress và đặt toàn bộ vào trong đó.
-  - Để đảm bảo tính quản lý, đặt index.php và .htaccess trực tiếp dưới thư mục root. Phần core của WordPress sẽ được lưu trong folder /wp-bridge2025/.
+- Vì toàn bộ thư mục cài đặt sẽ nằm dưới sự quản lý của WordPress, cần tạo một folder riêng cho WordPress và đặt toàn bộ vào trong đó:
+  - **Thư mục cài đặt WordPress (`wp-bridge{yyyy}`):** Thống nhất đặt tên thư mục cài đặt WordPress theo định dạng `wp-bridge{yyyy}` (`{yyyy}` là năm thực hiện, ví dụ: `wp-bridge2026`), **áp dụng chung cho cả môi trường Test và môi trường Production** (ví dụ: `https://www.example.com/wp-bridge2026/`).
+  - Để đảm bảo tính quản lý, đặt `index.php` và `.htaccess` trực tiếp dưới thư mục root của site, còn phần core WordPress lưu bên trong thư mục `/wp-bridge{yyyy}/`.
+- **Quy tắc quản lý file trên Git:**
+  - **Đối với dự án không phải WordPress (Web tĩnh / `TEMPLATE_HTML`):** **Bắt buộc đưa thư mục `public/`** (chứa các file HTML, CSS, JS... đã build) **lên Git để quản lý**, giúp phía Nhật Bản thuận tiện kiểm tra và upload file (không chặn `public/` trong `.gitignore`; chỉ loại trừ các file không cần thiết như `node_modules/`, `.env`, `*.map`).
+  - **Đối với dự án WordPress (`TEMPLATE_WP`):** **Chỉ đưa mã nguồn Theme của WordPress lên Git** để quản lý (không đẩy bộ cài lõi WordPress lên Git).
 
 #### Cấu trúc thư mục TEMPLATE_HTML
 
@@ -328,7 +332,11 @@ TEMPLATE_WP/
 - Nút “Back to Top” phải được cài đặt kể cả khi không có design cụ thể (sử dụng màu đang dùng trong website)
 - Mỗi section cần thêm hiệu ứng fade khi scroll. Trang tham khảo： 
   [https://web-loid.net/web/scroll-effect-js/](https://web-loid.net/web/scroll-effect-js/)
+  - **Đảm bảo tìm kiếm trong trang (`Ctrl + F` / Find in page):** Khi triển khai hiệu ứng xuất hiện khi cuộn trang (InView), **tuyệt đối không sử dụng `display: none` hoặc `visibility: hidden`** cho trạng thái ẩn ban đầu vì trình duyệt sẽ không thể tìm thấy nội dung chưa hiển thị trên màn hình. Bắt buộc sử dụng `opacity: 0` kết hợp `transform: translate(...)` để nội dung luôn tìm kiếm được ngay cả khi chưa cuộn tới.
 - Hover action: nếu không có chỉ thị đặc biệt, mặc định sử dụng hiệu ứng “làm mờ” (thay đổi opacity)
+- **Phản hồi khi chạm (Tap feedback) trên Smartphone:**
+  - Trên thiết bị di động không có trạng thái `:hover`, cần bổ sung hiệu ứng `:active` cho các liên kết (`<a>`) và nút bấm (`<button>`) để người dùng dễ nhận biết thao tác chạm.
+  - Lưu ý trên trình duyệt Safari (iOS), hiệu ứng `:active` mặc định không kích hoạt nếu thiếu sự kiện touch; vì vậy cần thêm thuộc tính `ontouchstart=""` vào thẻ `<body ontouchstart="">`.
 - Các link trong nội dung bài viết (WordPress, v.v.) phải có gạch chân (underline)
 - Cookie popup phải được triển khai mặc định trên toàn bộ website, và cần thiết lập link tới trang Privacy Policy hoặc trang thông tin cá nhân 
 
@@ -713,6 +721,10 @@ Vì mỗi cách bàn giao có quy trình khác nhau, nên cần xác nhận trư
 ### Cách thức giao hàng
 
 * Dù là bàn giao data hay công khai lên server, khi bàn giao không được bao gồm các file không cần thiết.
+* Tuyệt đối không đưa các file không cần thiết cho môi trường công khai như file `.map` (Source Map), `.scss`, `.env`, `node_modules` vào dữ liệu bàn giao hoặc upload lên server.
+* **Quy tắc bàn giao đối với các dự án sử dụng Build Template (`TEMPLATE_HTML` / `TEMPLATE_WP`):**
+  * Trước khi bắt đầu dự án, bắt buộc đọc kỹ file `README.md` để nắm rõ cấu trúc và cách thức vận hành của template.
+  * Trước khi bàn giao dữ liệu cho phía Nhật Bản, bắt buộc phải chạy **build** và kiểm tra kỹ dữ liệu đầu ra (giao diện, liên kết, đảm bảo không phát sinh file thừa như `.map`) rồi mới bàn giao.
 * Khi thực hiện công khai lên server, cần tham khảo  [「checklist」](https://docs.google.com/spreadsheets/d/1_iD95RWSG4_AlToFlA80eeN0c0eMDW0rgP1ahh_aWuo/edit?gid=0#gid=0) và kiểm tra từng bước trong khi làm
 
 #### giao data
@@ -844,7 +856,12 @@ Thay vì gom file chênh lệch thủ công dễ sai sót hay phải dùng phầ
 
 ### Về phương pháp xây dựng
 
-- Tạo một thư mục như「wp2026」, sau đó cài đặt WordPress vào trong thư mục đó 
+- **Thư mục cài đặt WordPress (`wp-bridge{yyyy}`):**
+  - Thống nhất đặt tên thư mục cài đặt WordPress theo định dạng `wp-bridge{yyyy}` (`{yyyy}` là năm thực hiện, ví dụ: `wp-bridge2026`), **áp dụng chung cho cả môi trường Test và môi trường Production**.
+  - Ví dụ: `https://www.example.com/wp-bridge2026/`
+  - Để đảm bảo tính quản lý, đặt `index.php` và `.htaccess` trực tiếp dưới thư mục root của site, còn phần core WordPress lưu bên trong thư mục `/wp-bridge{yyyy}/`.
+
+- Slug của các trang tĩnh (Page), chuyên mục (Category), thẻ (Tag), Custom Post Type và Custom Taxonomy bắt buộc phải sử dụng **tiếng Anh** (chữ thường, nối bằng dấu gạch ngang `-`, không để tiếng Nhật gây mã hóa URL).
 
 - Đối với developer thực hiện chính dự án, vui lòng tạo 2 tài khoản quản lý admin:
   - **Tài khoản master (Tài khoản chính):** Tạo khi setup WordPress.

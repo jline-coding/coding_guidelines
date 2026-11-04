@@ -1,6 +1,11 @@
 # 8-1. Về phương pháp xây dựng
 
-- Tạo một thư mục như「wp2026」, sau đó cài đặt WordPress vào trong thư mục đó 
+- **Thư mục cài đặt WordPress (`wp-bridge{yyyy}`):**
+  - Thống nhất đặt tên thư mục cài đặt WordPress theo định dạng `wp-bridge{yyyy}` (`{yyyy}` là năm thực hiện, ví dụ: `wp-bridge2026`), **áp dụng chung cho cả môi trường Test và môi trường Production**.
+  - Ví dụ: `https://www.example.com/wp-bridge2026/`
+  - Để đảm bảo tính quản lý, đặt `index.php` và `.htaccess` trực tiếp dưới thư mục root của site, còn phần core WordPress lưu bên trong thư mục `/wp-bridge{yyyy}/`.
+
+- Slug của các trang tĩnh (Page), chuyên mục (Category), thẻ (Tag), Custom Post Type và Custom Taxonomy bắt buộc phải sử dụng **tiếng Anh** (chữ thường, nối bằng dấu gạch ngang `-`, không để tiếng Nhật gây mã hóa URL).
 
 - Đối với developer thực hiện chính dự án, vui lòng tạo 2 tài khoản quản lý admin:
   - **Tài khoản master (Tài khoản chính):** Tạo khi setup WordPress.

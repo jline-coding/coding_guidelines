@@ -5,8 +5,12 @@
   - vendorフォルダにはスライダーなどのプラグインのjs,cssをいれる
 - Sassファイルはサーバーにはアップしない
 - 不要なファイルや画像はサーバー並びにローカル環境から削除する
-- WordPressの設置ディレクトリは、設置配下がWordPressの管理配下となるため、WordPressフォルダを作成しその中に入れる
-  - 管理性を考慮してルート直下に index.php、.htaccess を設置し、WordPress本体は「wp-bridge2025」フォルダに格納すること。
+- WordPressの設置ディレクトリは、設置配下がWordPressの管理配下となるため、WordPressフォルダを作成しその中に入れる：
+  - **WordPressのインストールディレクトリ（`wp-bridge{yyyy}`）：** WordPress本体を設置するディレクトリ名は、**テスト環境・本番環境ともに共通で `wp-bridge{yyyy}`**（`{yyyy}` は制作年、例：`wp-bridge2026`）の形式に統一すること（例：`https://www.example.com/wp-bridge2026/`）。
+  - 管理性を考慮してサイトルート直下に `index.php`、`.htaccess` を設置し、WordPress本体は `/wp-bridge{yyyy}/` フォルダ内に格納すること。
+- **Gitでのファイル管理ルール：**
+  - **WordPress以外の案件（静的サイト / `TEMPLATE_HTML`）：** ビルド済みの公開用フォルダ（**`public/`** 内のHTML・CSS・JS等）は、**必ずGitにアップして管理すること**（日本側でのファイル確認・アップロード作業を円滑にするため、`public/` は `.gitignore` で除外しない。※ `node_modules/`、`.env`、`*.map` 等の不要ファイルのみ除外する）。
+  - **WordPress案件（`TEMPLATE_WP`）：** **WordPressのテーマのみをGitにアップして管理すること**（WordPress本体一式はGitに含めない）。
 
 ### TEMPLATE_HTMLのフォルダ構成
 
